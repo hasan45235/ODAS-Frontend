@@ -17,12 +17,13 @@ import LockIcon from '@mui/icons-material/Lock';
 import HeadsetMicRoundedIcon from '@mui/icons-material/HeadsetMicRounded';
 import TestimonialCard from '../Components/Testimonials';
 import FAQs from '../Components/FAQs';
+import Footer from '../Components/Footer';
 
 const Home = () => {
   return (
     <>
         <Box>
-            <Box sx={{display:"flex",justifyContent:"space-around",mb:8,mt:4}}>
+            <Box sx={{display:"flex",justifyContent:"space-around",mb:8,mt:4,width:"90%",margin:"50px auto 100px"}}>
                 <Box sx={{mt:8,ml:4}}>
                     <Typography variant="h2" sx={{fontWeight:"bold"}} >Book Doctor Appointments Online - Anytime, Anywhere</Typography>
                     <Box component="form"   autoComplete="off">
@@ -165,6 +166,9 @@ const Home = () => {
                 <FAQs num="four" question="Is my personal and medical information secure?" answer="Absolutely. Your data is encrypted and stored securely. Only you and your assigned doctor have access to your medical records and appointments. The platform follows strict privacy and security standards."/>
                 <FAQs num="five" question="Does the platform support multiple hospitals or clinics?" answer="Yes. Doctors can add multiple clinic or hospital locations to their profiles, and each location can have its own schedule and consultation fee. Patients can choose the preferred location when booking an appointment, making the system flexible for multi-clinic doctors."/>
               </Box>
+            </Box>
+            <Box sx={{m:0}}>
+              <Footer />
             </Box>
         </Box>
     </>
