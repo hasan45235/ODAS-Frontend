@@ -12,6 +12,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
+import Button from '@mui/material/Button';
 
 
  function Navbar() {
@@ -21,27 +22,21 @@ import { Link } from "react-router-dom";
       
         <Toolbar sx={{display:"flex",justifyContent:"space-around"}}>
             <Box>
-                <Typography variant="h4" color="initial">HealthLink</Typography>
+                <Typography  sx={{}} variant="h4" >
+                    <Link style={{color:"#236bdfff",textDecoration:"none"}}  to="/">HealthLink</Link>
+                </Typography>
             </Box>
             <Box sx={{display:"flex",justifyContent:"space-between",gap:2}}>
-                <Typography>
-                    <Link to="/">
-                    Home
+                <Typography sx={{}}>
+                    <Link  to="/signup">
+                    <Button variant="contained">
+                    Sign-up
+                    </Button>
                     </Link>
                 </Typography>
-                <Typography>
-                    <Link to="/about">
-                    About
-                    </Link>
-                </Typography>
-                <Typography>
-                    <Link to="/contact"> 
-                    Contact
-                    </Link>
-                </Typography>
-                <Typography>
-                    <Link to="/login">
-                    Login
+                <Typography sx={{margin:"auto 0px"}}>
+                    <Link style={{fontSize:"12px",color:"#1976d2"}} to="/login">
+                    already have an account?
                     </Link>
                 </Typography>
             </Box>

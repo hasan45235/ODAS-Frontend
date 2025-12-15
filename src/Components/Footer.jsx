@@ -1,26 +1,21 @@
-import { Box, Typography, Grid, Link, IconButton } from "@mui/material";
+import { Box, Typography,  Link, IconButton } from "@mui/material";
 import { LinkedIn, Instagram } from "@mui/icons-material";
 
 function Footer() {
+
+
   const FooterLink = ({ label }) => {
-  return (
-    <Typography
-      sx={{
-        color: "#bfbfbf",
-        mb: 1.2,
-        cursor: "pointer",
-        "&:hover": { color: "#ffffff" },
-      }}
-    >
-      {label}
-    </Typography>
-  );
-}
+    return (
+      
+      <Typography sx={{ color: "#bfbfbf", fontSize:"14px", mb: 1.2, cursor: "pointer", "&:hover": { color: "#ffffff" },}}>{label}</Typography>
+
+    );
+  }
 
   return (
     <Box
       sx={{
-        backgroundColor: "#062449ff",
+        backgroundColor: "#124583ff",
         color: "#ffffff",
         pt: 8,
         pb: 4,
@@ -28,13 +23,13 @@ function Footer() {
         mt: 10
       }}
     >
-      <Grid container spacing={4}>
+      <Box sx={{display:"flex",justifyContent:"space-evenly"}} >
         {/* About */}
-        <Grid item xs={12} md={3}>
+        <Box sx={{width:'20%'}}>
           <Typography variant="h6" sx={{ mb: 2, fontWeight: 700 }}>
             HealthLink
           </Typography>
-          <Typography sx={{ color: "#bfbfbf", lineHeight: 1.7 }}>
+          <Typography sx={{ color: "#bfbfbf",fontSize:"15px" }}>
             Your trusted online platform for booking doctors, consulting
             specialists, and managing your medical records — anytime,
             anywhere.
@@ -48,9 +43,9 @@ function Footer() {
               <Instagram />
             </IconButton>
           </Box>
-        </Grid>
+        </Box>
 
-        <Grid item xs={12} md={3}>
+        <Box sx={{width:'20%',fontSize:"12px"}}>
           <Typography variant="h6" sx={{ mb: 2, fontWeight: 700 }}>
             Services
           </Typography>
@@ -58,9 +53,9 @@ function Footer() {
           <FooterLink label="Online Consultation" />
           <FooterLink label="Health Check" />
           <FooterLink label="Medical Records" />
-        </Grid>
+        </Box>
 
-        <Grid item xs={12} md={3}>
+        <Box sx={{width:'20%',fontSize:"12px"}}>
           <Typography variant="h6" sx={{ mb: 2, fontWeight: 700 }}>
             Company
           </Typography>
@@ -68,9 +63,9 @@ function Footer() {
           <FooterLink label="Careers" />
           <FooterLink label="Blog" />
           <FooterLink label="Contact" />
-        </Grid>
+        </Box>
 
-        <Grid item xs={12} md={3}>
+        <Box sx={{width:'20%',fontSize:"12px"}}>
           <Typography variant="h6" sx={{ mb: 2, fontWeight: 700 }}>
             Contact
           </Typography>
@@ -83,8 +78,8 @@ function Footer() {
           <Typography sx={{ color: "#bfbfbf", mt: 1 }}>
             support@healthlink.com
           </Typography>
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
 
       
       <Box
