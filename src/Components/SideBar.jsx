@@ -25,33 +25,23 @@ const DashboardSidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const menuItems = [
+  const adminMenuItems = [
     { text: "Dashboard", icon: <DashboardIcon />, path: "/dashboard" },
-    { text: "Profile", icon: <PersonIcon />, path: "/dashboard/profile" },
-    { text: "Settings", icon: <SettingsIcon />, path: "/dashboard/settings" },
+    { text: "Patients", icon: <PersonIcon />, path: "/dashboard/patient" },
+    { text: "Doctors", icon: <i className="fa-solid fa-user-doctor fa-lg" ></i>, path: "/dashboard/doctor" },
+    { text: "Controls", icon: <SettingsIcon />, path: "/dashboard/settings" },
   ];
 
+  
+  // const patientMenuItems = [
+  //   { text: "Dashboard", icon: <DashboardIcon />, path: "/dashboard" },
+  //   { text: "Profile", icon: <PersonIcon />, path: "/dashboard/profile" },
+  //   { text: "Settings", icon: <SettingsIcon />, path: "/dashboard/settings" },
+  // ];
+
   return (
-    <Drawer
-      variant="permanent"
-      sx={{
-        width: open ? expandedWidth : collapsedWidth,
-        flexShrink: 0,
-        "& .MuiDrawer-paper": {
-          width: open ? expandedWidth : collapsedWidth,
-          transition: "width 0.3s ease",
-          overflowX: "hidden",
-          backgroundColor: "#0f172a",
-          color: "#fff",
-        },
-      }}
-    >
-      <Toolbar
-        sx={{
-          display: "flex",
-          justifyContent: open ? "space-between" : "center",
-        }}
-      >
+    <Drawer variant="permanent" sx={{ width: open ? expandedWidth : collapsedWidth, flexShrink: 0, "& .MuiDrawer-paper": { width: open ? expandedWidth : collapsedWidth, transition: "width 0.3s ease", overflowX: "hidden", backgroundColor: "#0f172a", color: "#fff", }, }}>
+      <Toolbar sx={{ display: "flex", justifyContent: open ? "space-between" : "center", }}>
         {open && <Box sx={{ fontWeight: "bold" }}>Dashboard</Box>}
         <IconButton onClick={() => setOpen(!open)} sx={{ color: "#fff" }}>
           <MenuIcon />
@@ -59,36 +49,12 @@ const DashboardSidebar = () => {
       </Toolbar>
 
       <List>
-        {menuItems.map((item) => (
-          <Tooltip
-            key={item.text}
-            title={!open ? item.text : ""}
-            placement="right"
-          >
-            <ListItemButton
-              selected={location.pathname === item.path}
-              onClick={() => navigate(item.path)}
-              sx={{
-                justifyContent: open ? "initial" : "center",
-                "&.Mui-selected": {
-                  backgroundColor: "#1e293b",
-                },
-                "&:hover": {
-                  backgroundColor: "#1e293b",
-                },
-              }}
-            >
-              <ListItemIcon
-                sx={{
-                  color: "#fff",
-                  minWidth: 0,
-                  mr: open ? 2 : "auto",
-                  justifyContent: "center",
-                }}
-              >
+        {adminMenuItems.map((item) => (
+          <Tooltip key={item.text} title={!open ? item.text : ""} placement="right">
+            <ListItemButton selected={location.pathname === item.path} onClick={() => navigate(item.path)} sx={{ justifyContent: open ? "initial" : "center", "&.Mui-selected": { backgroundColor: "#1e293b", }, "&:hover": { backgroundColor: "#1e293b", }, }}>
+              <ListItemIcon sx={{ color: "#fff", minWidth: 0, mr: open ? 2 : "auto", justifyContent: "center", }}>
                 {item.icon}
               </ListItemIcon>
-
               {open && <ListItemText primary={item.text} />}
             </ListItemButton>
           </Tooltip>
@@ -96,24 +62,8 @@ const DashboardSidebar = () => {
 
         {/* LOGOUT */}
         <Tooltip title={!open ? "Logout" : ""} placement="right">
-          <ListItemButton
-            onClick={() => {
-              localStorage.removeItem("authToken");
-              navigate("/login");
-            }}
-            sx={{
-              mt: 4,
-              justifyContent: open ? "initial" : "center",
-            }}
-          >
-            <ListItemIcon
-              sx={{
-                color: "#ef4444",
-                minWidth: 0,
-                mr: open ? 2 : "auto",
-                justifyContent: "center",
-              }}
-            >
+          <ListItemButton onClick={() => { localStorage.removeItem("authToken"); navigate("/login");}} sx={{ mt: 4, justifyContent: open ? "initial" : "center", }}>
+            <ListItemIcon sx={{ color: "#ef4444", minWidth: 0, mr: open ? 2 : "auto", justifyContent: "center", }}>
               <LogoutIcon />
             </ListItemIcon>
             {open && <ListItemText primary="Logout" />}
