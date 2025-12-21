@@ -29,8 +29,8 @@ const Home = () => {
                     <Box component="form"   autoComplete="off">
                       <Box sx={{display:"flex",flexDirection:"column",mt:4,width:"100%"}}>  
                         <Box sx={{display:"flex",gap:2,mb:2,width:"100%"}}>
-                          <TextField  id="outlined-basic" label="Specialization" variant="outlined" />
-                          <TextField id="outlined-basic" label="City" variant="outlined" />
+                          <TextField  id="outlined-basic spec" label="Specialization" variant="outlined" />
+                          <TextField id="outlined-basic city" label="City" variant="outlined" />
                         </Box>
                         <Box sx={{display:"flex",gap:2,mb:2,width:"100%"}}>
                           <Button sx={{height:"50px",width:"220px"}} variant="contained"> Book Appointment </Button>

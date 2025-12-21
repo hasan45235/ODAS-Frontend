@@ -5,7 +5,6 @@ import TextField from '@mui/material/TextField';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import Typography from '@mui/material/Typography';
 import AuthContext from '../authContext';
-import { useNavigate } from 'react-router-dom';
 
 
 const Login = () => {
@@ -13,7 +12,6 @@ const Login = () => {
     const context = useContext(AuthContext);
     const {loginUser } = context;
 
-    const navigate = useNavigate();
 
     const [showPassword, setShowPassword] = useState(false);
   
@@ -38,7 +36,6 @@ const Login = () => {
       try {
         console.log("Login Data: ", dataArr);
         loginUser(dataArr);
-        navigate("/dashboard", { replace: true });
         
       } catch (error) {
         console.log("Error in Login: ", error);  

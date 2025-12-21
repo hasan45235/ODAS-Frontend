@@ -7,16 +7,15 @@ import Typography from '@mui/material/Typography';
 import backimage from '../sign.png';
 import Footer from '../Components/Footer';
 import AuthContext from '../authContext';
-import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
 
   const context = useContext(AuthContext);
-  const {createUser} = context;
+  const {createUser , allUsers , fetchUsers} = context;
 
-  const navigate = useNavigate();
+  const totalUsers = (allUsers.length + 1)
 
-  const [ dataArr, setDataArr] = useState({name:"", email:"", password:"", age:"", contact:"", gender:"", address:""});
+  const [ dataArr, setDataArr] = useState({receiptNum:`${totalUsers}`,name:"", email:"", password:"", age:"", contact:"", gender:"", address:"",role:"patient"});
 
   const genderArr = ['Male', 'Female', 'Other'];
 
@@ -29,9 +28,8 @@ const Signup = () => {
   const addUser = async() => {
     try {
       
-      console.log("User Added", dataArr);
       await createUser(dataArr);
-      navigate("/dashboard", { replace: true });
+
     } catch (error) {
       console.log("Error in Signup: ", error);
     }
@@ -49,10 +47,11 @@ const Signup = () => {
     event.preventDefault();
   };
 
-  useEffect(() => {
-    console.log(dataArr);
+
+  useEffect(()=>{
+    fetchUsers()
     // eslint-disable-next-line
-  }, []);
+  },[])
 
   return (
     <>

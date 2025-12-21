@@ -15,7 +15,8 @@ import PersonIcon from "@mui/icons-material/Person";
 import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import AuthContext from "../authContext";
 
 const expandedWidth = 240;
 const collapsedWidth = 70;
@@ -25,19 +26,31 @@ const DashboardSidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const adminMenuItems = [
-    { text: "Dashboard", icon: <DashboardIcon />, path: "/dashboard" },
-    { text: "Patients", icon: <PersonIcon />, path: "/dashboard/patient" },
-    { text: "Doctors", icon: <i className="fa-solid fa-user-doctor fa-lg" ></i>, path: "/dashboard/doctor" },
-    { text: "Controls", icon: <SettingsIcon />, path: "/dashboard/settings" },
-  ];
-
   
-  // const patientMenuItems = [
-  //   { text: "Dashboard", icon: <DashboardIcon />, path: "/dashboard" },
-  //   { text: "Profile", icon: <PersonIcon />, path: "/dashboard/profile" },
-  //   { text: "Settings", icon: <SettingsIcon />, path: "/dashboard/settings" },
-  // ];
+
+  const context = useContext(AuthContext)
+  const {logout , authToken} = context
+
+  const navItems = {
+    admin:[
+      { text: "Dashboard", icon: <DashboardIcon />, path: "/admin/dashboard" },
+      { text: "Patients", icon: <PersonIcon />, path: "/dashboard/patient" },
+      { text: "Doctors", icon: <i className="fa-solid fa-user-doctor fa-lg" ></i>, path: "/dashboard/doctor" },
+      { text: "Controls", icon: <SettingsIcon />, path: "/dashboard/settings" },
+    ],
+    doctor:[
+      { text: "Dashboard", icon: <DashboardIcon />, path: "/doctor/dashboard" },
+      { text: "Profile", icon: <PersonIcon />, path: "/dashboard/profile" },
+      { text: "Settings", icon: <SettingsIcon />, path: "/dashboard/settings" },
+    ],
+    patient:[
+      { text: "Dashboard", icon: <DashboardIcon />, path: "/patient/dashboard" },
+      { text: "Profile", icon: <PersonIcon />, path: "/dashboard/profile" },
+      { text: "Settings", icon: <SettingsIcon />, path: "/dashboard/settings" },
+    ]
+  } 
+
+  const navIcons = navItems[authToken.role]
 
   return (
     <Drawer variant="permanent" sx={{ width: open ? expandedWidth : collapsedWidth, flexShrink: 0, "& .MuiDrawer-paper": { width: open ? expandedWidth : collapsedWidth, transition: "width 0.3s ease", overflowX: "hidden", backgroundColor: "#0f172a", color: "#fff", }, }}>
@@ -49,7 +62,7 @@ const DashboardSidebar = () => {
       </Toolbar>
 
       <List>
-        {adminMenuItems.map((item) => (
+        {navIcons.map((item) => (
           <Tooltip key={item.text} title={!open ? item.text : ""} placement="right">
             <ListItemButton selected={location.pathname === item.path} onClick={() => navigate(item.path)} sx={{ justifyContent: open ? "initial" : "center", "&.Mui-selected": { backgroundColor: "#1e293b", }, "&:hover": { backgroundColor: "#1e293b", }, }}>
               <ListItemIcon sx={{ color: "#fff", minWidth: 0, mr: open ? 2 : "auto", justifyContent: "center", }}>
@@ -62,7 +75,7 @@ const DashboardSidebar = () => {
 
         {/* LOGOUT */}
         <Tooltip title={!open ? "Logout" : ""} placement="right">
-          <ListItemButton onClick={() => { localStorage.removeItem("authToken"); navigate("/login");}} sx={{ mt: 4, justifyContent: open ? "initial" : "center", }}>
+          <ListItemButton onClick={() => { logout(); }} sx={{ mt: 4, justifyContent: open ? "initial" : "center", }}>
             <ListItemIcon sx={{ color: "#ef4444", minWidth: 0, mr: open ? 2 : "auto", justifyContent: "center", }}>
               <LogoutIcon />
             </ListItemIcon>

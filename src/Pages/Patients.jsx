@@ -1,5 +1,5 @@
 import { Box, Toolbar } from '@mui/material'
-import React, { useContext, useEffect, useRef } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import DashboardSidebar from '../Components/SideBar'
 import Table from '@mui/material/Table';
@@ -19,6 +19,8 @@ const Patients = () => {
   const context = useContext(AuthContext)
   const {fetchUsers , allUsers} = context
 
+
+  const [clickedUser,setClickedUser] = useState({})
   
   const checkUserPatient = (user) =>{
     
@@ -55,7 +57,7 @@ const Patients = () => {
                 {allPatients.map((user)=>{
                   return (
                     <TableRow
-                    onClick={()=>{patRef.current.click()}}
+                    onClick={()=>{patRef.current.click();setClickedUser(user)}}
                     key={user._id}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     >
@@ -73,7 +75,7 @@ const Patients = () => {
               </Table>
             </TableContainer>
           </Box>
-          <Modal refs={patRef}/>
+          <Modal refs={patRef} clickedUser={clickedUser}/>
         </Box>
       </Box>
     </>
