@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import AuthState from './authState';
+import AvailibilityState from './AvailibilityState';
 
 
 
@@ -11,7 +12,9 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <AuthState>
-        <App />
+        <AvailibilityState>
+          <App />
+        </AvailibilityState>
       </AuthState>
     </BrowserRouter>
   </React.StrictMode>

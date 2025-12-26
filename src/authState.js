@@ -8,10 +8,14 @@ const AuthState = (props) => {
     const API_Create = "http://localhost:5000/auth/createUser"
     const API_Login = "http://localhost:5000/auth/loginUser"
     const API_GETUSERS = "http://localhost:5000/auth/getAllUsers"
-
+    
     const [authToken, setAuthToken] = useState({token:null,role:null,isLoading: true});
     
+    const [allUsers , setAllUsers] = useState([])
+    
+    
 
+    
     useEffect(()=>{
         const token = localStorage.getItem('authToken')
         const role = localStorage.getItem('userRole')
@@ -133,7 +137,6 @@ const AuthState = (props) => {
         }
     }
 
-    const [allUsers , setAllUsers] = useState([])
 
     const fetchUsers = async () => {
         try {
@@ -153,8 +156,26 @@ const AuthState = (props) => {
         }
     }
 
+    const [currentUser , setCurrentUser] = useState(null);
+
+    const fetchCurrentUser = async () => {
+      try {
+          const response = await fetch("http://localhost:5000/auth/getUser",{
+              method:"GET",
+              headers: {
+                  'Content-Type': 'application/json',
+                  'auth-token': localStorage.getItem('authToken')
+              }
+          })
+          const json = await response.json()
+          setCurrentUser(json);
+      } catch (error) {
+          console.log("error",error)
+      }
+  }
+
   return (
-    <AuthContext.Provider value={{ createUser , loginUser , authToken , addDoctor , fetchUsers , allUsers , logout}}>
+    <AuthContext.Provider value={{ createUser , loginUser , authToken , addDoctor , fetchUsers , allUsers , logout , currentUser , fetchCurrentUser}}>
         {props.children}
     </AuthContext.Provider>
   );

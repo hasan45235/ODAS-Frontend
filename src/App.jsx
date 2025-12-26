@@ -6,8 +6,9 @@ import Login from "./Pages/Login";
 import Signup from "./Pages/Signup";
 // import Dashboard from "./Pages/Dashboard";
 import ProtectedRoute from "./protectedRoute";
-// import Patients from "./Pages/Patients";
+import Patients from "./Pages/Patients";
 // import Doctors from "./Pages/Doctors";
+import Appointments from "./Pages/Appointments";
 import Profile from "./Pages/Profile";
 import Controls from "./Pages/Controls";
 import AdminDash from "./Components/AdminDash";
@@ -34,17 +35,41 @@ function App() {
           <AdminDash />
         </ProtectedRoute>
       } />
-          
+      
+      <Route path="/admin/patient" element={
+        <ProtectedRoute allowedRoles={['admin']}>
+          <Patients />
+        </ProtectedRoute>
+      } />    
+
       <Route path="/doctor/dashboard" element={
         <ProtectedRoute allowedRoles={['doctor']}>
           <DoctorDash />
+        </ProtectedRoute>
+      } />
+
+      <Route path="/doctor/appointment" element={
+        <ProtectedRoute allowedRoles={['doctor']}>
+          <Appointments />
+        </ProtectedRoute>
+      } />
+
+      <Route path="/doctor/profile" element={
+        <ProtectedRoute allowedRoles={['doctor']}>
+          <Profile />
+        </ProtectedRoute>
+      } />
+
+      <Route path="/doctor/settings" element={
+        <ProtectedRoute allowedRoles={['doctor']}>
+          <Controls />
         </ProtectedRoute>
       } />
           
       <Route path="/patient/dashboard" element={
         <ProtectedRoute allowedRoles={['patient']}>
           <PatientDash />
-          <Profile />
+          
         </ProtectedRoute>
       } />
 

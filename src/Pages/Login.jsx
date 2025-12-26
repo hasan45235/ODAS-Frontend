@@ -55,7 +55,7 @@ const Login = () => {
                 <OutlinedInput id="outlined-adornment-password" type={showPassword ? 'text' : 'password'} name='password' onChange={(e)=>{onChangeHandler(e)}} endAdornment={ <InputAdornment position="end"><IconButton aria-label={ showPassword ? 'hide the password' : 'display the password' } onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} onMouseUp={handleMouseUpPassword} edge="end" >{showPassword ? <VisibilityOff /> : <Visibility />}</IconButton></InputAdornment>} label="Password" />              
               </FormControl>
             </Box>
-            <Button variant="contained" color="primary" type="submit" sx={{p:1}} fullWidth>Done</Button>
+            <Button variant="contained" color="primary" type="submit" sx={{p:1}} fullWidth>Login</Button>
             </Box>
           </Card>
           <Footer />

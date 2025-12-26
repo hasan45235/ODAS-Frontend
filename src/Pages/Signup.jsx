@@ -76,7 +76,7 @@ const Signup = () => {
             <Autocomplete disablePortal options={genderArr} onChange={(event, newValue) => {setDataArr((prev) => ({...prev,gender: newValue ? newValue : "" }));}} sx={{ width: "30ch" }} renderInput={(params) => <TextField {...params} label="Gender" name='gender' />}/>
           </Box>
           <TextField id="outlined-basic address" label="Address" name='address' variant="outlined" fullWidth onChange={(e)=>{onChangeHandler(e)}}/><br /><br />
-          <Button variant="contained" color="primary" type="submit">Done</Button>
+          <Button variant="contained" color="primary" type="submit">Sign-up</Button>
           </Box>
         </Card>
         <Footer />

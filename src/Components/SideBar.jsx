@@ -17,6 +17,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 import AuthContext from "../authContext";
+import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 
 const expandedWidth = 240;
 const collapsedWidth = 70;
@@ -34,19 +35,20 @@ const DashboardSidebar = () => {
   const navItems = {
     admin:[
       { text: "Dashboard", icon: <DashboardIcon />, path: "/admin/dashboard" },
-      { text: "Patients", icon: <PersonIcon />, path: "/dashboard/patient" },
+      { text: "Patients", icon: <PersonIcon />, path: "/admin/patient" },
       { text: "Doctors", icon: <i className="fa-solid fa-user-doctor fa-lg" ></i>, path: "/dashboard/doctor" },
       { text: "Controls", icon: <SettingsIcon />, path: "/dashboard/settings" },
     ],
     doctor:[
       { text: "Dashboard", icon: <DashboardIcon />, path: "/doctor/dashboard" },
-      { text: "Profile", icon: <PersonIcon />, path: "/dashboard/profile" },
-      { text: "Settings", icon: <SettingsIcon />, path: "/dashboard/settings" },
+      { text: "Appointments", icon: <AppRegistrationIcon />, path: "/doctor/appointment" },
+      { text: "Profile", icon: <PersonIcon />, path: "/doctor/profile" },
+      { text: "Settings", icon: <SettingsIcon />, path: "/doctor/settings" },
     ],
     patient:[
       { text: "Dashboard", icon: <DashboardIcon />, path: "/patient/dashboard" },
-      { text: "Profile", icon: <PersonIcon />, path: "/dashboard/profile" },
-      { text: "Settings", icon: <SettingsIcon />, path: "/dashboard/settings" },
+      { text: "Profile", icon: <PersonIcon />, path: "/patient/profile" },
+      { text: "Settings", icon: <SettingsIcon />, path: "/patient/settings" },
     ]
   } 
 
