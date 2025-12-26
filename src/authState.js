@@ -148,9 +148,6 @@ const AuthState = (props) => {
             })
             const json = await response.json()
             setAllUsers(json)
-            console.log(json)
-            console.log(allUsers)
-
         } catch (error) {
             console.log("error",error)
         }

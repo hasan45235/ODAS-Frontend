@@ -14,6 +14,8 @@ import Controls from "./Pages/Controls";
 import AdminDash from "./Components/AdminDash";
 import DoctorDash from "./Components/DoctorDash";
 import PatientDash from "./Components/PatientDash";
+import PatAppointments from "../src/Components/PatAppointments";
+import PatDoctors from "../src/Components/PatDoctors";
 
 function App() {
 
@@ -69,10 +71,32 @@ function App() {
       <Route path="/patient/dashboard" element={
         <ProtectedRoute allowedRoles={['patient']}>
           <PatientDash />
-          
         </ProtectedRoute>
       } />
-
+      
+      <Route path="/patient/profile" element={
+        <ProtectedRoute allowedRoles={['patient']}>
+          <Profile />
+        </ProtectedRoute>
+      } />
+      
+      <Route path="/patient/settings" element={
+        <ProtectedRoute allowedRoles={['patient']}>
+          <Controls />
+        </ProtectedRoute>
+      } />
+      
+      <Route path="/patient/appointment" element={
+        <ProtectedRoute allowedRoles={['patient']}>
+          <PatAppointments />
+        </ProtectedRoute>
+      } />
+      
+      <Route path="/patient/doctors" element={
+        <ProtectedRoute allowedRoles={['patient']}>
+          <PatDoctors />
+        </ProtectedRoute>
+      } />
       <Route path="*" element={<Navigate to="/login" replace />} />  
      </Routes>
      

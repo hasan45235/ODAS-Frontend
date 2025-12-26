@@ -48,6 +48,8 @@ const DashboardSidebar = () => {
     patient:[
       { text: "Dashboard", icon: <DashboardIcon />, path: "/patient/dashboard" },
       { text: "Profile", icon: <PersonIcon />, path: "/patient/profile" },
+      { text: "Appointments", icon: <AppRegistrationIcon />, path: "/patient/appointment" },
+      { text: "Doctors", icon: <i className="fa-solid fa-user-doctor fa-lg" ></i>, path: "/patient/doctors" },
       { text: "Settings", icon: <SettingsIcon />, path: "/patient/settings" },
     ]
   } 
