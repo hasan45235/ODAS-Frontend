@@ -4,6 +4,7 @@ import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import AuthState from './authState';
 import AvailibilityState from './AvailibilityState';
+import AppointmentsState from './appointState';
 
 
 
@@ -13,7 +14,9 @@ root.render(
     <BrowserRouter>
       <AuthState>
         <AvailibilityState>
-          <App />
+          <AppointmentsState>
+            <App />
+          </AppointmentsState>
         </AvailibilityState>
       </AuthState>
     </BrowserRouter>
