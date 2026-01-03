@@ -82,7 +82,6 @@ const AddAvaibility = (props) => {
     };
 
     const addData = () => {
-      console.log("Schedule Added Successfully",data);
       addAvailability(data, doctorId);
     }
 

@@ -3,7 +3,6 @@ import DashboardSidebar from './SideBar'
 import { Box, Button, Card, CardContent, Fade, Modal, Toolbar, Typography } from '@mui/material'
 import { Outlet } from 'react-router-dom'
 import AuthContext from '../authContext'
-import AddAppointment from './AddAppointment'
 import Backdrop from '@mui/material/Backdrop';
 
 
@@ -114,7 +113,6 @@ const PatDoctors = () => {
         </Fade>
       </Modal>
           </Box>
-          <AddAppointment  />
         </Box>
       </Box>
     </>
