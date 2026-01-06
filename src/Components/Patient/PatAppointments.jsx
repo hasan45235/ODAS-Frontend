@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import DashboardSidebar from './SideBar'
+import DashboardSidebar from '../SideBar'
 import { Box,  Card, Toolbar } from '@mui/material'
 import { Outlet } from 'react-router-dom'
 

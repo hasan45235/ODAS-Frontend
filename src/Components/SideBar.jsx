@@ -18,6 +18,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 import AuthContext from "../authContext";
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
+import ListAltIcon from '@mui/icons-material/ListAlt';
+import PersonalInjuryIcon from '@mui/icons-material/PersonalInjury';
 
 const expandedWidth = 240;
 const collapsedWidth = 70;
@@ -41,8 +43,10 @@ const DashboardSidebar = () => {
     ],
     doctor:[
       { text: "Dashboard", icon: <DashboardIcon />, path: "/doctor/dashboard" },
-      { text: "Appointments", icon: <AppRegistrationIcon />, path: "/doctor/appointment" },
       { text: "Profile", icon: <PersonIcon />, path: "/doctor/profile" },
+      { text: "Schedule", icon: <ListAltIcon />, path: "/doctor/appointment" },
+      { text: "Appointments", icon: <AppRegistrationIcon />, path: "/doctor/appointment" },
+      { text: "Patients", icon: <PersonalInjuryIcon />, path: "/doctor/appointment" },
       { text: "Settings", icon: <SettingsIcon />, path: "/doctor/settings" },
     ],
     patient:[

@@ -11,7 +11,7 @@ const Card = (props) => {
           {icon}
           <Box sx={{margin:"auto 0px"}}>
             <Typography variant="h6" color="initial">{title}</Typography>
-            <Typography variant="body1" sx={{color:"grey",fontSize:"14px"}}>{desc}</Typography>
+            <Typography variant="body1" sx={{color:"grey",fontSize:"14px"}}>{desc <= 9 ? `0${desc}` : desc}</Typography>
           </Box>
         </Box>
     </>

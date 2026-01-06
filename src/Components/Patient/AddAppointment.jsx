@@ -1,15 +1,14 @@
-import { Box, Button, Card,  Fade, Modal, Typography } from '@mui/material'
-import React, { useContext, useEffect, useRef, useState } from 'react'
-import AppointmentsContext from '../AppointmentsContext'
-import Backdrop from '@mui/material/Backdrop';
+import { Box, Button, Divider, Typography } from '@mui/material'
+import React, { useContext, useEffect,  useState } from 'react'
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import AuthContext from '../authContext'
-import AvailablilityContext from '../availibilityContext'
+import AuthContext from '../../authContext'
+import AvailablilityContext from '../../availibilityContext'
 import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import AppointmentsContext from '../../AppointmentsContext';
 
 const AddAppointment = () => {
 
@@ -115,11 +114,6 @@ const AddAppointment = () => {
       }
 
       
-  
-      const [open, setOpen] = useState(false);
-      const handleOpen = () => setOpen(true);
-      const handleClose = () => setOpen(false);
-    
 
       useEffect(()=>{
         fetchAllApointments();
@@ -132,14 +126,19 @@ const AddAppointment = () => {
   return (
     <>
       <Box>     
-        <Box component="form" autoComplete="off" sx={{m:4,p:4}} onSubmit={(e) => {e.preventDefault(); handleAdd();handleClose();setSelectedAvailability(null);setSelectedDoctor(null);setData({hospitalName:"",hospitalId:null,fees:"",bookedDate:"",bookedSlot:"",doctorId:null,receiptNum:""})}} >
-          <Box sx={{display:"flex",justifyContent:"space-between",mb:4,alignItems:"center"}}>
+        <Box component="form" autoComplete="off" sx={{m:4,p:4}} onSubmit={(e) => {e.preventDefault(); handleAdd();setSelectedAvailability(null);setSelectedDoctor(null);setData({hospitalName:"",hospitalId:null,fees:"",bookedDate:"",bookedSlot:"",doctorId:null,receiptNum:""})}} >
+          <Box sx={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
             <Typography variant="h5" sx={{fontWeight:"bold"}} color="initial">Schedule an Appointment</Typography>
-            <Typography variant="body1" color="initial">{generateReceiptNum(appointments)}</Typography>
+            <Typography variant="body1" color="initial">#{generateReceiptNum(appointments)}</Typography>
           </Box>
+          <Divider sx={{mb:2,mt:2}}/>
           <Box sx={{display:"flex",justifyContent:"space-between",gap:"20px"}}>
             <Box sx={{display:'flex',justifyContent:"space-between",flex:1,flexDirection:"column"}}>
               <Autocomplete disablePortal fullWidth onChange={(event,newValue)=>{setSelectedDoctor(newValue);setData({...data,doctorId:newValue?._id})}} options={doctors} getOptionLabel={(option) => option.name}  renderInput={(params) => <TextField {...params} label="Select Doctor" />}/>
+              <TextField id="outlined-read-only-input"  label="Doctor Fees" value={selectedAvailability?.fees || ''}  slotProps={{ input: { readOnly: true, }, }}/>
+            </Box>
+            <Box sx={{display:'flex',justifyContent:"space-between",flex:1,flexDirection:"column"}}>
+              <TextField id="outlined-read-only-input"  label="Specialization" value={selectedDoctor?.speciality || ''}  slotProps={{ input: { readOnly: true, }, }}/>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DemoContainer components={['DatePicker']}>
                   <DemoItem >
@@ -151,12 +150,9 @@ const AddAppointment = () => {
                 </DemoContainer>
               </LocalizationProvider>
             </Box>
-            <Box sx={{display:'flex',justifyContent:"space-between",flex:1,flexDirection:"column"}}>
+            <Box sx={{display:'flex',justifyContent:"space-between",flexDirection:"column",flex:1}}>
               <Autocomplete disablePortal fullWidth onChange={(event,newValue)=>{setSelectedAvailability(newValue);setData({...data,hospitalName:newValue?.hospitalName,hospitalId:newValue?._id,fees:newValue?.fees,receiptNum:generateReceiptNum(appointments)})}} options={doctorAvailability} getOptionLabel={(option) => option.hospitalName}  renderInput={(params) => <TextField {...params} label="Clinic/Hospital" />}/>
               <Autocomplete disablePortal fullWidth options={generateSlots(selectedAvailability?.startTime,selectedAvailability?.endTime,selectedAvailability?.slotDuration)} onChange={(event,newValue)=>{setData({...data,bookedSlot:newValue})}}  renderInput={(params) => <TextField {...params} label="Available Slots" />}/>
-            </Box>
-            <Box sx={{display:'flex',justifyContent:"left",flexDirection:"column",flex:1}}>
-              <TextField id="outlined-read-only-input"  label="Doctor Fees" value={selectedAvailability?.fees || ''}  slotProps={{ input: { readOnly: true, }, }}/>
             </Box>
           </Box><br />
           <Box sx={{display:"flex",justifyContent:"flex-end"}}>

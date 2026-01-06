@@ -13,9 +13,12 @@ import Profile from "./Pages/Profile";
 import Controls from "./Pages/Controls";
 import AdminDash from "./Components/AdminDash";
 import DoctorDash from "./Components/DoctorDash";
-import PatientDash from "./Components/PatientDash";
-import PatAppointments from "../src/Components/PatAppointments";
-import PatDoctors from "../src/Components/PatDoctors";
+import PatientDash from "./Components/Patient/PatientDash";
+import PatAppointments from "./Components/Patient/PatAppointments";
+import PatDoctors from "./Components/Patient/PatDoctors";
+import PatProfile from "./Components/Patient/PatProfile";
+import PatSettings from "./Components/Patient/PatSettings";
+
 
 function App() {
 
@@ -76,13 +79,13 @@ function App() {
       
       <Route path="/patient/profile" element={
         <ProtectedRoute allowedRoles={['patient']}>
-          <Profile />
+          <PatProfile />
         </ProtectedRoute>
       } />
       
       <Route path="/patient/settings" element={
         <ProtectedRoute allowedRoles={['patient']}>
-          <Controls />
+          <PatSettings />
         </ProtectedRoute>
       } />
       
