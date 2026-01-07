@@ -9,7 +9,7 @@ const MyAppointments = (props) => {
   const {btnState} = props
 
   const context = useContext(AppointmentsContext)
-  const {fetchPatAppointments , patAppointments} = context
+  const {fetchPatAppointments , specificAppointments} = context
 
   const context2 = useContext(AuthContext)
   const {currentUser , fetchCurrentUser , fetchUsers , allUsers} = context2 
@@ -27,7 +27,7 @@ const MyAppointments = (props) => {
     <>
       <Box sx={{p:4}}>
         <Typography variant="h5" sx={{fontWeight:"bold",textAlign:"center",p:2}} color="initial">{btnState === "My Appointments" ? "My Appointments" : ""}</Typography>
-        {patAppointments.map((item)=>{
+        {specificAppointments.map((item)=>{
           
           const doctor = allUsers.filter((user)=>user._id === item.doctorId)
           

@@ -99,9 +99,9 @@ const PatientDash = () => {
   const handleOpen = ()=> setOpen(true)
 
   const context2 = useContext(AppointmentsContext)
-  const {fetchPatAppointments , patAppointments} = context2
+  const {fetchPatAppointments , specificAppointments} = context2
 
-  const completedApp = patAppointments.filter((item)=>item.status === "completed")
+  const completedApp = specificAppointments.filter((item)=>item.status === "completed")
 
   useEffect(()=>{
     fetchPatAppointments()
@@ -117,7 +117,7 @@ const PatientDash = () => {
           <Outlet />
           <Box sx={{display:"flex",justifyContent:"space-around"}}>
             <DashCard title='Upcoming Appointments' desc="data" icon={<PendingActionsIcon sx={{fontSize:"50px",color:"#527dc7",padding:"0px 15px",margin:"auto 0px"}}/>} />
-            <DashCard title='Total Appointments' desc={patAppointments.length} icon={<ListAltIcon sx={{fontSize:"50px",color:"#527dc7",padding:"0px 15px",margin:"auto 0px"}}/>} />
+            <DashCard title='Total Appointments' desc={specificAppointments.length} icon={<ListAltIcon sx={{fontSize:"50px",color:"#527dc7",padding:"0px 15px",margin:"auto 0px"}}/>} />
             <DashCard title='Completed Appointments' desc={!completedApp ? 0 : completedApp.length} icon={<OfflinePinIcon sx={{fontSize:"50px",color:"#527dc7",padding:"0px 15px",margin:"auto 0px"}}/>} />
           </Box>
           <Card sx={{p:2,m:5,borderRadius:3,boxShadow:3,bgcolor: "background.paper",}}>

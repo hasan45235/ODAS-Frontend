@@ -4,10 +4,11 @@ import AppointmentsContext from "./AppointmentsContext";
 const AppointmentsState = ({children}) => {
   
   const [appointments, setAppointments] = useState([]);
-  const [patAppointments,setPatAppointments] = useState([])
+  const [specificAppointments,setSpecificAppointments] = useState([])
 
   const API = "http://localhost:5000/appointments"
-  const API_2 = "http://localhost:5000/appointments/fetchPatSpecApp"
+  const API_PAT = "http://localhost:5000/appointments/PatAppointments"
+  const API_DOC = "http://localhost:5000/appointments/DocAppointments"
 
   const addAppointment = async (data , id)=>{
     const response = await fetch(API, {
@@ -38,7 +39,7 @@ const AppointmentsState = ({children}) => {
 
   
   const fetchPatAppointments = async () => {
-    const response = await fetch(API_2, {
+    const response = await fetch(API_PAT, {
       method: 'GET',    
         headers: {
         'Content-Type': 'application/json',
@@ -47,12 +48,39 @@ const AppointmentsState = ({children}) => {
     });
     const json = await response.json();
     console.log(json);
-    setPatAppointments(json);
+    setSpecificAppointments(json);
+  }
+
+  const fetchDocAppointments = async () => {
+    const response = await fetch(API_DOC, {
+      method: 'GET',    
+        headers: {
+        'Content-Type': 'application/json',
+        'auth-token': localStorage.getItem('authToken')
+        },
+    });
+    const json = await response.json();
+    console.log(json);
+    setSpecificAppointments(json);
+  }
+
+  const updateAppointment = async(data , id) => {
+    const response = await fetch(`${API}/${id}`,{
+      method:"PUT",
+      headers:{
+        'Content-Type': 'application/json',
+        'auth-token': localStorage.getItem('authToken')
+      },
+      body:JSON.stringify({status:data})
+    })
+    const json = await response.json()
+    console.log(json)
+    fetchDocAppointments();
   }
 
   
   return (
-    <AppointmentsContext.Provider value={{addAppointment, fetchAllApointments , appointments , fetchPatAppointments , patAppointments}}>
+    <AppointmentsContext.Provider value={{addAppointment, fetchAllApointments , appointments , fetchPatAppointments , specificAppointments , fetchDocAppointments , updateAppointment}}>
         {children}
     </AppointmentsContext.Provider>
   )
