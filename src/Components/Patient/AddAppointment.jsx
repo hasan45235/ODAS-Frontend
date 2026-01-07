@@ -41,14 +41,14 @@ const AddAppointment = () => {
     
     const [data, setData] = useState({hospitalName:"",hospitalId:null,fees:"",bookedDate:"",bookedSlot:"",doctorId:null,receiptNum:""})
     
-    const bookedSlots = appointments.filter((item)=>{return item.doctorId === selectedDoctor?._id}).filter((item)=>{return item.bookedDate === data.bookedDate}).map((item)=>{return item.bookedSlot})
+    const bookedSlots = appointments.filter((item)=>{return item.doctorId === selectedDoctor?._id}).filter((item)=>{return item.bookedDate === data.bookedDate}).filter((item)=> item.status !== "rejected").map((item)=>{ return item.bookedSlot})
 
     const dayMap = {
       Sun: 0,
       Mon: 1,
-      Tue: 2,
+      Tues: 2,
       Wed: 3,
-      Thu: 4,
+      Thurs: 4,
       Fri: 5,
       Sat: 6,
     };

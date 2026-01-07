@@ -55,34 +55,12 @@ const InfoRow = ({ type, title, subtitle, time }) => {
         '&:hover':{boxShadow:"0px 0px 5px grey",transition:"0.5s",transform:'translateY(-1px)',cursor:"pointer"}
       }}
     >
-      {/* Icon */}
-      <Avatar
-        sx={{
-          bgcolor: activityColorMap[type],
-          width: 36,
-          height: 36,
-        }}
-      >
-        {activityIconMap[type]}
-      </Avatar>
-
-      {/* Text */}
+      <Avatar sx={{ bgcolor: activityColorMap[type], width: 36, height: 36}}>{activityIconMap[type]}</Avatar>
       <Box sx={{ flex: 1 }}>
-        <Typography fontWeight={600} fontSize={14}>
-          {title}
-        </Typography>
-        <Typography variant="caption" color="text.secondary">
-          {subtitle}
-        </Typography>
+        <Typography fontWeight={600} fontSize={14}>{title}</Typography>
+        <Typography variant="caption" color="text.secondary">{subtitle}</Typography>
       </Box>
-
-      {/* Time */}
-      <Chip
-        label={time}
-        size="small"
-        sx={{ fontSize: 11 }}
-        variant="outlined"
-      />
+      <Chip label={time} size="small" sx={{ fontSize: 11 }} variant="outlined"/>
     </Box>
   );
 };

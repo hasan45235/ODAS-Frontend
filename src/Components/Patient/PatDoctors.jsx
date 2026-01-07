@@ -124,6 +124,7 @@ const PatDoctors = () => {
                     <Divider sx={{ mb: 2 }} />
                     <Box sx={{ display: "flex", flexDirection: "column", gap: 1.2 }}>
                       <InfoRow label="Hospital" value={selectedDoctor?.hospital} />
+                      <InfoRow label="Qualification" value={`${selectedDoctor?.qualification}`} />
                       <InfoRow label="Experience" value={`${selectedDoctor?.experience} years`} />
                       <InfoRow label="Gender" value={selectedDoctor?.gender} />
                       <InfoRow label="Consultation Fee" value={`Rs. ${selectedDoctor?.fee}`} />

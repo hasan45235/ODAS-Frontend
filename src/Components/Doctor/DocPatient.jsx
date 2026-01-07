@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, Chip, Divider, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Toolbar, Typography } from '@mui/material'
+import { Box, Card, CardContent, Chip, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Toolbar, Typography } from '@mui/material'
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import DashboardSidebar from "../SideBar"
@@ -18,6 +18,7 @@ const DocPatients = () => {
 
   const [selectedAppointment,setSelectedAppointment] = useState({})
 
+  console.log(selectedAppointment)
   const completedAppointments = specificAppointments.filter((item)=> item.status === "completed")
 
 
@@ -39,7 +40,7 @@ const DocPatients = () => {
               
               <Card sx={{ borderRadius: 3, boxShadow: 3  }}>
                 <CardContent >
-                  <Typography variant="h5" sx={{fontWeight:"bold",mt:4,mb:2}} color="initial">Patient You Have Consulted</Typography>
+                  <Typography variant="h5" sx={{fontWeight:"bold",mt:4,mb:2}} color="initial">Patients You Have Consulted</Typography>
                   <TableContainer>
                     <Table>
                       <TableHead>
