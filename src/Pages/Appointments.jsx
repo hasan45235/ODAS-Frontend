@@ -3,14 +3,14 @@ import React, {  useContext, useEffect, useRef } from 'react'
 import SideBar from '../Components/SideBar'
 import { Box, Button, Toolbar } from '@mui/material'
 import { Outlet } from 'react-router-dom'
-import AddAvaibility from '../Components/AddAvaibility'
-import availibilityContext from '../availibilityContext'
+import AddAvaibility from '../Components/Doctor/AddAvaibility'
+import ScheduleContext from '../scheduleContext'
 import AuthContext from '../authContext'
 
 const Appointments = () => {
   
-    const context = useContext(availibilityContext);
-    const {specificAvailability, fetchSpecificAvailability} = context;
+    const context = useContext(ScheduleContext);
+    const {specificSchedule, fetchSpecificSchedule} = context;
 
 
   const generateSlots = (startTime, endTime, slotDuration) => {
@@ -53,7 +53,7 @@ const Appointments = () => {
     const addRef = useRef();
 
     useEffect(() => {
-        fetchSpecificAvailability()
+        fetchSpecificSchedule()
         fetchCurrentUser();
       // eslint-disable-next-line  
     }, [])
@@ -70,7 +70,7 @@ const Appointments = () => {
             <Button onClick={()=>{addRef.current.click()}} variant="contained" sx={{mt:3}}>Add Schedule</Button>
           </Box>
           <Box>
-            {specificAvailability && specificAvailability.map((item, index) => (
+            {specificSchedule && specificSchedule.map((item, index) => (
               <Box key={index} sx={{border:"1px solid #000", p:2, mb:2, borderRadius:2}}>
                 <h3>Name: {currentUser?.name}</h3>
                 <p>Center: {item?.hospitalName}</p>

@@ -4,20 +4,27 @@ import Navbar from "./Components/Navbar";
 import { Navigate, Route , Routes, useLocation} from "react-router-dom"
 import Login from "./Pages/Login";
 import Signup from "./Pages/Signup";
-// import Dashboard from "./Pages/Dashboard";
 import ProtectedRoute from "./protectedRoute";
-import Patients from "./Pages/Patients";
-// import Doctors from "./Pages/Doctors";
+// Admin Imports
 import Appointments from "./Pages/Appointments";
+import Patients from "./Pages/Patients";
 import Profile from "./Pages/Profile";
 import Controls from "./Pages/Controls";
-import AdminDash from "./Components/AdminDash";
-import DoctorDash from "./Components/DoctorDash";
+import Doctors from "./Pages/Doctors";
+import Dashboard from "./Pages/Dashboard";
+// Patient Imports
 import PatientDash from "./Components/Patient/PatientDash";
 import PatAppointments from "./Components/Patient/PatAppointments";
 import PatDoctors from "./Components/Patient/PatDoctors";
 import PatProfile from "./Components/Patient/PatProfile";
 import PatSettings from "./Components/Patient/PatSettings";
+// Doctor Imports
+import DocPatient from "./Components/Doctor/DocPatient"
+import DocSchedule from "./Components/Doctor/DocSchedule"
+import DocAppointment from "./Components/Doctor/DocAppointments"
+import DocProfile from "./Components/Doctor/DocProfile"
+import DocSettings from "./Components/Doctor/DocSettings"
+import DocDashboard from "./Components/Doctor/DocDashboard"
 
 
 function App() {
@@ -37,40 +44,75 @@ function App() {
       
       <Route path="/admin/dashboard" element={
         <ProtectedRoute allowedRoles={['admin']}>
-          <AdminDash />
+          <Dashboard />
+        </ProtectedRoute>
+      } />
+      <Route path="/admin/patients" element={
+        <ProtectedRoute allowedRoles={['admin']}>
+          <Patients />
+        </ProtectedRoute>
+      } />
+      <Route path="/admin/doctors" element={
+        <ProtectedRoute allowedRoles={['admin']}>
+          <Doctors />
+        </ProtectedRoute>
+      } />
+      <Route path="/admin/appointments" element={
+        <ProtectedRoute allowedRoles={['admin']}>
+          <Appointments />
+        </ProtectedRoute>
+      } />
+      <Route path="/admin/profile" element={
+        <ProtectedRoute allowedRoles={['admin']}>
+          <Profile />
+        </ProtectedRoute>
+      } />
+      <Route path="/admin/settings" element={
+        <ProtectedRoute allowedRoles={['admin']}>
+          <Controls />
         </ProtectedRoute>
       } />
       
-      <Route path="/admin/patient" element={
-        <ProtectedRoute allowedRoles={['admin']}>
-          <Patients />
+      {/* Doctor Routes */}    
+
+      <Route path="/doctor/patient" element={
+        <ProtectedRoute allowedRoles={['doctor']}>
+          <DocPatient />
+        </ProtectedRoute>
+      } />    
+
+      <Route path="/doctor/schedule" element={
+        <ProtectedRoute allowedRoles={['doctor']}>
+          <DocSchedule />
         </ProtectedRoute>
       } />    
 
       <Route path="/doctor/dashboard" element={
         <ProtectedRoute allowedRoles={['doctor']}>
-          <DoctorDash />
+          <DocDashboard />
         </ProtectedRoute>
       } />
 
       <Route path="/doctor/appointment" element={
         <ProtectedRoute allowedRoles={['doctor']}>
-          <Appointments />
+          <DocAppointment />
         </ProtectedRoute>
       } />
 
       <Route path="/doctor/profile" element={
         <ProtectedRoute allowedRoles={['doctor']}>
-          <Profile />
+          <DocProfile />
         </ProtectedRoute>
       } />
 
       <Route path="/doctor/settings" element={
         <ProtectedRoute allowedRoles={['doctor']}>
-          <Controls />
+          <DocSettings />
         </ProtectedRoute>
       } />
-          
+
+      {/* Patient Routes */}    
+      
       <Route path="/patient/dashboard" element={
         <ProtectedRoute allowedRoles={['patient']}>
           <PatientDash />

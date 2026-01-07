@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import AuthState from './authState';
-import AvailibilityState from './AvailibilityState';
+import ScheduleState from './ScheduleState';
 import AppointmentsState from './appointState';
 
 
@@ -13,11 +13,11 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <AuthState>
-        <AvailibilityState>
+        <ScheduleState>
           <AppointmentsState>
             <App />
           </AppointmentsState>
-        </AvailibilityState>
+        </ScheduleState>
       </AuthState>
     </BrowserRouter>
   </React.StrictMode>

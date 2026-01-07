@@ -44,17 +44,17 @@ const AddDoctorModal = (props) => {
     
     const [ dataArr, setDataArr] = useState({receiptnum:"",name:"", email:"", password:"", age:"", contact:"", gender:"", address:"",bio:"",speciality:"",experience:"",fee:0,qualification:"",role:"doctor"});
     
-        const receiptNum = (item) => {
-        if(Number(item) <= 9){
-          return "000"+Number(item)
-        }else if(Number(item) <= 99){
-          return "00"+Number(item)
-        }else if(Number(item) <= 999){
-          return "0"+Number(item)
-        }else{
-          return Number(item)
-        }
-        }
+        // const receiptNum = (item) => {
+        // if(Number(item) <= 9){
+        //   return "000"+Number(item)
+        // }else if(Number(item) <= 99){
+        //   return "00"+Number(item)
+        // }else if(Number(item) <= 999){
+        //   return "0"+Number(item)
+        // }else{
+        //   return Number(item)
+        // }
+        // }
         
 
 

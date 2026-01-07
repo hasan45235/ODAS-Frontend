@@ -1,6 +1,5 @@
-import {  Box, Button, Card, Fade, FormControl,  Modal, OutlinedInput, TextField } from '@mui/material';
+import {  Box, Button,  FormControl,  OutlinedInput, TextField, Typography } from '@mui/material';
 import  { useContext, useEffect, useState } from 'react'
-import Backdrop from '@mui/material/Backdrop';
 import {  useTheme } from '@mui/material/styles';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
@@ -11,8 +10,10 @@ import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { renderTimeViewClock } from '@mui/x-date-pickers/timeViewRenderers';
 import InputAdornment from '@mui/material/InputAdornment';
 import { inputBaseClasses } from '@mui/material/InputBase';
-import AvailibilityContext from '../availibilityContext';
-import AuthContext from '../authContext';
+import ScheduleContext from '../../scheduleContext';
+import AuthContext from '../../authContext';
+import dayjs from "dayjs";
+
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -38,51 +39,64 @@ function getStyles(name, personName, theme) {
 
 const AddAvaibility = (props) => {
 
-    const context = useContext(AvailibilityContext)
-    const {addAvailability } = context;
+    const {handleClose , schedule , action} = props
+
+
+
+    const context = useContext(ScheduleContext)
+    const {addSchedule , updateSchedule} = context;
 
     const context2 = useContext(AuthContext)
     const {fetchCurrentUser , currentUser} = context2;
-
-    const {ref} = props;
 
     const [data , setData] = useState({hospitalName:"", fees:"", days:[], startTime:null, endTime:null, slotDuration:""});
     
     const doctorId = currentUser ? currentUser._id : null;
 
     const onChange = (e) => {
-        setData({...data, [e.target.name]: e.target.value})
-        
+      setFormData({...formData,[e.target.name]: e.target.value})
     }
 
-    const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: '70%',
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    };
-
     
+    
+    const [editData,setEditData] = useState({
+      hospitalName:schedule?.hospitalName,
+      startTime:schedule?.startTime,
+      endTime:schedule?.endTime,
+      fees:schedule?.fees,
+      slotDuration:schedule?.slotDuration,
+      days:schedule?.days
+    })
 
-    const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
-  
+    const formData = action === "Edit" ? editData : data;
+    const setFormData = action === "Edit" ? setEditData : setData;
+
+    const editDataId = schedule?._id
+
+    const updateData = () => {
+      updateSchedule(editData , editDataId)
+    }
+
     const theme = useTheme();
 
-    const handleChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setData({...data, days: typeof value === 'string' ? value.split(',') : value});
+    const handleChange = (event) => {      
+      const {target: { value }} = event;
+      setFormData({...formData, days: typeof value === 'string' ? value.split(',') : value})
     };
 
     const addData = () => {
-      addAvailability(data, doctorId);
+      addSchedule(data, doctorId);
+    }
+
+    const submitform = (e) => {
+      e.preventDefault();
+      if(action === "Edit"){
+        updateData();
+        handleClose();
+        setEditData({})
+        return
+      }
+      addData();
     }
 
     useEffect(() => {
@@ -92,16 +106,14 @@ const AddAvaibility = (props) => {
 
     return(
       <>
-        <Button onClick={handleOpen} ref={ref} sx={{display:"none"}}>Open modal</Button>
-        <Modal aria-labelledby="transition-modal-title" aria-describedby="transition-modal-description" open={open} onClose={handleClose} closeAfterTransition slots={{ backdrop: Backdrop }} slotProps={{ backdrop: { timeout: 500,}, }}>
-          <Fade in={open}>
-            <Box sx={style}>
-              <Card component="form" autoComplete="off" sx={{m:4,p:4}} onSubmit={(e) => {e.preventDefault();addData();handleClose()}} >
+            <Box>
+              <Box component="form" autoComplete="off" sx={{m:4,p:4}} onSubmit={(e) => {submitform()}} >
+                <Typography variant="h5" sx={{fontWeight:"bold"}} color="initial">{action ? "Edit your Schedule" : "Add Schedule"}</Typography>
                 <Box sx={{display:"flex",justifyContent:"space-between",alignItems:"flex-end",mt:3}}>
-                <TextField sx={{  width: "32%"}} name='hospitalName' onChange={(e)=>{onChange(e)}} id="outlined-basic" label="Clinic/Hospital Name" variant="outlined" />
-                <TextField sx={{  width: "32%"}} name='fees' onChange={(e)=>{onChange(e)}} id="outlined-basic" label="Fees" variant="outlined" />
+                <TextField sx={{  width: "32%"}} value={formData?.hospitalName} name='hospitalName' onChange={(e)=>{onChange(e)}} id="outlined-basic" label="Clinic/Hospital Name" variant="outlined" />
+                <TextField sx={{  width: "32%"}} name='fees' value={formData?.fees} onChange={(e)=>{onChange(e)}} id="outlined-basic" label="Fees" variant="outlined" />
                 <FormControl sx={{  width: "32%"}}>
-                  <Select multiple displayEmpty value={data.days} name='days' onChange={handleChange} input={<OutlinedInput />} renderValue={(selected) => { if (selected.length === 0) { return <em>Days</em>; } return selected.join(', '); }} MenuProps={MenuProps} inputProps={{ 'aria-label': 'Without label' }}>
+                  <Select multiple displayEmpty value={Array.isArray(formData.days) ? formData.days : []} name='days' onChange={handleChange} input={<OutlinedInput />} renderValue={(selected) => { if (selected.length === 0) { return <em>Days</em>; } return selected.join(', '); }} MenuProps={MenuProps} inputProps={{ 'aria-label': 'Without label' }}>
                    {names.map((name) => ( <MenuItem key={name} value={name} style={getStyles(name, data.days, theme)}> {name} </MenuItem>))}
                   </Select>
                 </FormControl>
@@ -111,9 +123,9 @@ const AddAvaibility = (props) => {
                   <DemoContainer components={['TimePicker']}>
                     <TimePicker
                       label="Start Time"
+                      value={formData?.startTime ? dayjs(formData?.startTime, "HH:mm") : null}
                       onChange={(newValue) => {
-
-                       setData({...data, startTime:newValue.format("HH:mm")});
+                          setFormData({...formData, startTime:newValue.format("HH:mm")})
                       }}
                       viewRenderers={{
                         hours: renderTimeViewClock,
@@ -127,8 +139,9 @@ const AddAvaibility = (props) => {
                   <DemoContainer components={['TimePicker']}>
                     <TimePicker
                       label="End Time"
+                      value={formData?.endTime ? dayjs(formData?.endTime, "HH:mm") : null}
                       onChange={(newValue) => {
-                       setData({...data, endTime:newValue.format("HH:mm")});
+                          setFormData({...formData, endTime:newValue.format("HH:mm")})
                       }}
                       viewRenderers={{
                         hours: renderTimeViewClock,
@@ -138,13 +151,11 @@ const AddAvaibility = (props) => {
                     />
                   </DemoContainer>
                 </LocalizationProvider>
-                <TextField  id="outlined-basic" name='slotDuration' onChange={(e)=>{onChange(e)}} label="Slot Duration" type='Number' variant="outlined" sx={{width: "32%", "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": { WebkitAppearance: "none", margin: 0, }, "& input[type=number]": { MozAppearance: "textfield", },}} slotProps={{ input: { endAdornment: ( <InputAdornment position="end" sx={{ opacity: 0, pointerEvents: 'none', [`[data-shrink=true] ~ .${inputBaseClasses.root} > &`]: { opacity: 1,}, }}> mins </InputAdornment> ), },}}/>
+                <TextField  id="outlined-basic" value={formData?.slotDuration} name='slotDuration' onChange={(e)=>{onChange(e)}} label="Slot Duration" type='Number' variant="outlined" sx={{width: "32%", "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": { WebkitAppearance: "none", margin: 0, }, "& input[type=number]": { MozAppearance: "textfield", },}} slotProps={{ input: { endAdornment: ( <InputAdornment position="end" sx={{ opacity: 0, pointerEvents: 'none', [`[data-shrink=true] ~ .${inputBaseClasses.root} > &`]: { opacity: 1,}, }}> mins </InputAdornment> ), },}}/>
                 </Box>
-                <Button type='submit' variant="contained" sx={{width: "25%",p:1,mt:2}}>Submit</Button>
-              </Card>  
+                <Button type='submit' variant="contained" sx={{width: "25%",p:1,mt:2}}>Confirm</Button>
+              </Box>
             </Box>
-          </Fade>
-        </Modal>
         
         </>
     )

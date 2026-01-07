@@ -1,5 +1,5 @@
 import { Box, Button, Toolbar } from '@mui/material'
-import React, {useContext, useEffect, useRef, useState} from 'react'
+import React, {useContext, useEffect, useRef} from 'react'
 import { Outlet } from 'react-router-dom'
 import DashboardSidebar from '../Components/SideBar'
 import Table from '@mui/material/Table';
@@ -26,7 +26,7 @@ const Doctors = () => {
 
   const checkUserDoctor = (user) =>{
     
-    return user.role == "doctor"
+    return user.role === "doctor"
   }
   const allDoctors = allUsers.filter((user)=>(checkUserDoctor(user)))
 

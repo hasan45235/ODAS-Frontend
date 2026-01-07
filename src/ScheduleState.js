@@ -1,18 +1,17 @@
 import { useState } from "react";
-import AppointContext from "./availibilityContext";
+import ScheduleContext from "./scheduleContext";
 
-const AppointState = ({children}) => {
+const ScheduleState = ({children}) => {
   
-
     const API = 'http://localhost:5000/availability';
     const API_2 = 'http://localhost:5000/availability/doctorAvailability';
 
-    const [availability, setAvailability] = useState([])
+    const [schedule, setSchedule] = useState([])
 
-    const [specificAvailability, setSpecificAvailability] = useState([])
+    const [specificSchedule, setSpecificSchedule] = useState([])
 
 
-    const fetchAvailability = async () => {
+    const fetchSchedule = async () => {
         const response = await fetch(API , {
             method: 'GET',
             headers: {
@@ -21,12 +20,12 @@ const AppointState = ({children}) => {
             },
         });
         const json = await response.json();
-        setAvailability(json)
+        setSchedule(json)
         
         
     }
 
-    const addAvailability = async (data,doctorId) => {
+    const addSchedule = async (data,doctorId) => {
         console.log("Adding schedule for user:", doctorId,data);
         const response = await fetch(API, {
             method: 'POST',
@@ -37,11 +36,11 @@ const AppointState = ({children}) => {
             body: JSON.stringify({...data,doctorId})
         });
         const json = await response.json();
-        fetchSpecificAvailability();
+        fetchSpecificSchedule();
         console.log("Schedule Added Successfully",json);
     }
 
-    const fetchSpecificAvailability = async () => {
+    const fetchSpecificSchedule = async () => {
         const response = await fetch(API_2 , {
             method: 'GET',
             headers: {
@@ -50,16 +49,30 @@ const AppointState = ({children}) => {
             },
         });
         const json = await response.json();
-        setSpecificAvailability(json)
+        setSpecificSchedule(json)
         
         
     }
 
+    const updateSchedule = async(data , id) => {
+        const response = await fetch(`${API}/${id}`,{
+            method:"PUT",
+            headers:{
+                'Content-Type': 'application/json',
+                'auth-token': localStorage.getItem('authToken')
+            },
+            body: JSON.stringify({...data})
+        })
+        const json = await response.json()
+        console.log(json)
+        fetchSpecificSchedule();
+    }
+
 
     return (
-    <AppointContext.Provider value={{ fetchAvailability , availability , addAvailability, fetchSpecificAvailability , specificAvailability}}>
+    <ScheduleContext.Provider value={{ fetchSchedule , schedule , addSchedule, fetchSpecificSchedule , specificSchedule, updateSchedule}}>
       {children}
-    </AppointContext.Provider>
+    </ScheduleContext.Provider>
   )
 }
-export default AppointState;
+export default ScheduleState;

@@ -3,7 +3,7 @@ import React, { useContext, useEffect,  useState } from 'react'
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import AuthContext from '../../authContext'
-import AvailablilityContext from '../../availibilityContext'
+import ScheduleContext from '../../scheduleContext'
 import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -19,8 +19,8 @@ const AddAppointment = () => {
   const context2 = useContext(AuthContext)
   const {fetchUsers , allUsers, currentUser , fetchCurrentUser} = context2
 
-  const context3 = useContext(AvailablilityContext)
-  const {fetchAvailability , availability} = context3
+  const context3 = useContext(ScheduleContext)
+  const {fetchSchedule , schedule} = context3
 
   
   
@@ -35,9 +35,9 @@ const AddAppointment = () => {
     }
     const doctors = allUsers.filter((user)=>(filterDoctor(user)))
     
-    const doctorAvailability = availability.filter(item => item.doctorId === selectedDoctor?._id);
+    const doctorSchedule = schedule.filter(item => item.doctorId === selectedDoctor?._id);
     
-    const [selectedAvailability, setSelectedAvailability] = useState(null)
+    const [selectedSchedule, setSelectedSchedule] = useState(null)
     
     const [data, setData] = useState({hospitalName:"",hospitalId:null,fees:"",bookedDate:"",bookedSlot:"",doctorId:null,receiptNum:""})
     
@@ -89,7 +89,7 @@ const AddAppointment = () => {
 
 
      
-      const doctorWorkingDays = (!selectedAvailability?.days ? [] : selectedAvailability?.days).map((day)=> {return dayMap[day]});
+      const doctorWorkingDays = (!selectedSchedule?.days ? [] : selectedSchedule?.days).map((day)=> {return dayMap[day]});
 
 
       const generateReceiptNum = (data) => {
@@ -118,7 +118,7 @@ const AddAppointment = () => {
       useEffect(()=>{
         fetchAllApointments();
         fetchUsers();
-        fetchAvailability();
+        fetchSchedule();
         fetchCurrentUser();
         // eslint-disable-next-line
       },[])    
@@ -126,7 +126,7 @@ const AddAppointment = () => {
   return (
     <>
       <Box>     
-        <Box component="form" autoComplete="off" sx={{m:4,p:4}} onSubmit={(e) => {e.preventDefault(); handleAdd();setSelectedAvailability(null);setSelectedDoctor(null);setData({hospitalName:"",hospitalId:null,fees:"",bookedDate:"",bookedSlot:"",doctorId:null,receiptNum:""})}} >
+        <Box component="form" autoComplete="off" sx={{m:4,p:4}} onSubmit={(e) => {e.preventDefault(); handleAdd();setSelectedSchedule(null);setSelectedDoctor(null);setData({hospitalName:"",hospitalId:null,fees:"",bookedDate:"",bookedSlot:"",doctorId:null,receiptNum:""})}} >
           <Box sx={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
             <Typography variant="h5" sx={{fontWeight:"bold"}} color="initial">Schedule an Appointment</Typography>
             <Typography variant="body1" color="initial">#{generateReceiptNum(appointments)}</Typography>
@@ -135,7 +135,7 @@ const AddAppointment = () => {
           <Box sx={{display:"flex",justifyContent:"space-between",gap:"20px"}}>
             <Box sx={{display:'flex',justifyContent:"space-between",flex:1,flexDirection:"column"}}>
               <Autocomplete disablePortal fullWidth onChange={(event,newValue)=>{setSelectedDoctor(newValue);setData({...data,doctorId:newValue?._id})}} options={doctors} getOptionLabel={(option) => option.name}  renderInput={(params) => <TextField {...params} label="Select Doctor" />}/>
-              <TextField id="outlined-read-only-input"  label="Doctor Fees" value={selectedAvailability?.fees || ''}  slotProps={{ input: { readOnly: true, }, }}/>
+              <TextField id="outlined-read-only-input"  label="Doctor Fees" value={selectedSchedule?.fees || ''}  slotProps={{ input: { readOnly: true, }, }}/>
             </Box>
             <Box sx={{display:'flex',justifyContent:"space-between",flex:1,flexDirection:"column"}}>
               <TextField id="outlined-read-only-input"  label="Specialization" value={selectedDoctor?.speciality || ''}  slotProps={{ input: { readOnly: true, }, }}/>
@@ -151,8 +151,8 @@ const AddAppointment = () => {
               </LocalizationProvider>
             </Box>
             <Box sx={{display:'flex',justifyContent:"space-between",flexDirection:"column",flex:1}}>
-              <Autocomplete disablePortal fullWidth onChange={(event,newValue)=>{setSelectedAvailability(newValue);setData({...data,hospitalName:newValue?.hospitalName,hospitalId:newValue?._id,fees:newValue?.fees,receiptNum:generateReceiptNum(appointments)})}} options={doctorAvailability} getOptionLabel={(option) => option.hospitalName}  renderInput={(params) => <TextField {...params} label="Clinic/Hospital" />}/>
-              <Autocomplete disablePortal fullWidth options={generateSlots(selectedAvailability?.startTime,selectedAvailability?.endTime,selectedAvailability?.slotDuration)} onChange={(event,newValue)=>{setData({...data,bookedSlot:newValue})}}  renderInput={(params) => <TextField {...params} label="Available Slots" />}/>
+              <Autocomplete disablePortal fullWidth onChange={(event,newValue)=>{setSelectedSchedule(newValue);setData({...data,hospitalName:newValue?.hospitalName,hospitalId:newValue?._id,fees:newValue?.fees,receiptNum:generateReceiptNum(appointments)})}} options={doctorSchedule} getOptionLabel={(option) => option.hospitalName}  renderInput={(params) => <TextField {...params} label="Clinic/Hospital" />}/>
+              <Autocomplete disablePortal fullWidth options={generateSlots(selectedSchedule?.startTime,selectedSchedule?.endTime,selectedSchedule?.slotDuration)} onChange={(event,newValue)=>{setData({...data,bookedSlot:newValue})}}  renderInput={(params) => <TextField {...params} label="Available Slots" />}/>
             </Box>
           </Box><br />
           <Box sx={{display:"flex",justifyContent:"flex-end"}}>
