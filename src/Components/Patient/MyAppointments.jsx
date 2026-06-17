@@ -4,9 +4,8 @@ import { Box, Typography } from '@mui/material'
 import AppointmentCard from './AppointmentCard'
 import AuthContext from '../../authContext'
 
-const MyAppointments = (props) => {
+const MyAppointments = () => {
   
-  const {btnState} = props
 
   const context = useContext(AppointmentsContext)
   const {fetchPatAppointments , specificAppointments} = context
@@ -26,8 +25,12 @@ const MyAppointments = (props) => {
   return (
     <>
       <Box sx={{p:4}}>
-        <Typography variant="h5" sx={{fontWeight:"bold",textAlign:"center",p:2}} color="initial">{btnState === "My Appointments" ? "My Appointments" : ""}</Typography>
-        {specificAppointments.map((item)=>{
+        <Typography variant="h5" sx={{fontWeight:"bold",textAlign:"center",p:2}} color="initial">{specificAppointments.length !== 0 ? "My Appointments" : ""}</Typography>
+
+        {specificAppointments.length === 0 ? (
+          <Typography variant="body1" sx={{textAlign:"center",p:2}}>No appointments found.</Typography>
+        ) : (
+          specificAppointments.map((item)=>{
           
           const doctor = allUsers.filter((user)=>user._id === item.doctorId)
           
@@ -36,7 +39,7 @@ const MyAppointments = (props) => {
               <AppointmentCard  appointment={item} patient={currentUser} doctor={doctor}/><br /><br />
             </Box>
           )
-        })}
+        }))}
       </Box>
     </>
   )

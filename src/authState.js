@@ -13,7 +13,6 @@ const AuthState = (props) => {
     
     const [allUsers , setAllUsers] = useState([])
     
-    
 
     
     useEffect(()=>{
@@ -32,7 +31,11 @@ const AuthState = (props) => {
             body: JSON.stringify(data)
         });
         const json = await response.json();
-        console.log("User added successfully",json)
+        console.log(json)
+        if(json.error){
+          return  json
+        }  
+        // eslint-disable-next-line
         if(response.ok){
                 
                 signup(json.authToken, data.role);
@@ -88,6 +91,10 @@ const AuthState = (props) => {
             });
             const json = await response.json();
             console.log(json)
+            if(json.error){
+              return  json
+            }  
+            // eslint-disable-next-line
             if(response.ok){
                 
                 login(json.authToken, json.role);
@@ -172,7 +179,7 @@ const AuthState = (props) => {
   }
 
   return (
-    <AuthContext.Provider value={{ createUser , loginUser , authToken , addDoctor , fetchUsers , allUsers , logout , currentUser , fetchCurrentUser}}>
+    <AuthContext.Provider value={{ createUser , loginUser , authToken , addDoctor , fetchUsers , allUsers , logout , currentUser , fetchCurrentUser }}>
         {props.children}
     </AuthContext.Provider>
   );

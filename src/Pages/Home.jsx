@@ -1,5 +1,5 @@
 import { Box, Typography } from '@mui/material'
-import React from 'react'
+import React , {useState} from 'react'
 import docImg from "../online-doctor.avif"
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -18,8 +18,14 @@ import HeadsetMicRoundedIcon from '@mui/icons-material/HeadsetMicRounded';
 import TestimonialCard from '../Components/Testimonials';
 import FAQs from '../Components/FAQs';
 import Footer from '../Components/Footer';
+import {  useNavigate } from "react-router-dom";
+
 
 const Home = () => {
+  
+  let [formData, setFormData] = useState({specialization:"",city:""})
+  const navigate = useNavigate()
+
   return (
     <>
         <Box>
@@ -29,12 +35,12 @@ const Home = () => {
                     <Box component="form"   autoComplete="off">
                       <Box sx={{display:"flex",flexDirection:"column",mt:4,width:"100%"}}>  
                         <Box sx={{display:"flex",gap:2,mb:2,width:"100%"}}>
-                          <TextField  id="outlined-basic spec" label="Specialization" variant="outlined" />
-                          <TextField id="outlined-basic city" label="City" variant="outlined" />
+                          <TextField  id="outlined-basic spec" label="Specialization" variant="outlined" onChange={(e) => setFormData({...formData, specialization: e.target.value})} />
+                          <TextField id="outlined-basic city" label="City" variant="outlined" onChange={(e) => setFormData({...formData, city: e.target.value})} />
                         </Box>
                         <Box sx={{display:"flex",gap:2,mb:2,width:"100%"}}>
-                          <Button sx={{height:"50px",width:"220px"}} variant="contained"> Book Appointment </Button>
-                          <Button sx={{height:"50px",width:"220px"}} variant="outlined">Find a Doctor</Button>
+                          <Button sx={{height:"50px",width:"220px"}} variant="contained" onClick={() => navigate('/login')}> Book Appointment </Button>
+                          <Button sx={{height:"50px",width:"220px"}} variant="outlined" onClick={() => navigate('/login')}>Find a Doctor</Button>
                         </Box>
                       </Box>
                     </Box>
@@ -50,7 +56,7 @@ const Home = () => {
 
             </Box>
             <Box sx={{width:"90%",margin:"0px auto"}}>
-                <Typography variant="h3" sx={{fontWeight:"600"}} color="initial">How It Works</Typography>
+                <Typography variant="h3" sx={{fontWeight:"600",textAlign:"center"}} color="initial">How It Works</Typography>
                 <Box sx={{display:"flex",justifyContent:"space-between"}}>
                     <Box sx={{width:"25%",height:"25vh",backgroundColor:"white",borderRadius:"20px",p:3}}>
                       <Box component="img" src={patImg} alt="Doctor" sx={{ width: "50px", height: "auto", borderRadius: 2 }}/>  
@@ -113,28 +119,28 @@ const Home = () => {
               <Typography variant="h3" sx={{fontWeight:"600",textAlign:"center",mb:"50px"}} color="initial">Why Choose Us</Typography>
               <Box sx={{display:"flex",justifyContent:"space-around"}}>
                 <Box sx={{display:"flex",flexDirection:"column",alignItems:"center",gap:2}}>
-                  <Box sx={{display:"flex", padding:"20px 10px",width:"70%",boxShadow:"0px 0px 5px grey",mt:2}}>
+                  <Box sx={{display:"flex", padding:"20px 10px",width:"70%",boxShadow:"0px 0px 5px grey",mt:2,"&:hover":{boxShadow:"0px 0px 10px grey",transform:"translateY(-5px)",transition:"all 0.3s"}}}>
                     <VerifiedUserIcon sx={{fontSize:"50px",color:"#527dc7",padding:"0px 15px"}}/>
                     <Box>
                       <Typography variant="h6" color="initial">Verified Doctors</Typography>
                       <Typography variant="body1" sx={{color:"grey",fontSize:"14px"}}>Every doctor on our platform is professionally verified.</Typography>
                     </Box>
                   </Box>
-                  <Box sx={{display:"flex", padding:"20px 10px",width:"70%",boxShadow:"0px 0px 5px grey",mt:2}}>
+                  <Box sx={{display:"flex", padding:"20px 10px",width:"70%",boxShadow:"0px 0px 5px grey",mt:2,"&:hover":{boxShadow:"0px 0px 10px grey",transform:"translateY(-5px)",transition:"all 0.3s"}}}>
                     <EditCalendarIcon sx={{fontSize:"50px",color:"#527dc7",padding:"0px 15px"}}/>
                     <Box>
                       <Typography variant="h6" color="initial">Verified & Trusted Doctors</Typography>
                       <Typography variant="body1" sx={{color:"grey",fontSize:"14px"}}>Every doctor on our platform is professionally verified.</Typography>
                     </Box>
                   </Box>
-                  <Box sx={{display:"flex", padding:"20px 10px",width:"70%",boxShadow:"0px 0px 5px grey",mt:2}}>
+                  <Box sx={{display:"flex", padding:"20px 10px",width:"70%",boxShadow:"0px 0px 5px grey",mt:2,"&:hover":{boxShadow:"0px 0px 10px grey",transform:"translateY(-5px)",transition:"all 0.3s"}}}>
                     <LockIcon sx={{fontSize:"50px",color:"#527dc7",padding:"0px 15px"}}/>
                     <Box>
                       <Typography variant="h6" color="initial">Secure Digital Medical Records</Typography>
                       <Typography variant="body1" sx={{color:"grey",fontSize:"14px"}}>Your prescriptions, reports and appointment history stay secured, organized and accessable anytime.</Typography>
                     </Box>
                   </Box>
-                  <Box sx={{display:"flex", padding:"20px 10px",width:"70%",boxShadow:"0px 0px 5px grey",mt:2}}>
+                  <Box sx={{display:"flex", padding:"20px 10px",width:"70%",boxShadow:"0px 0px 5px grey",mt:2,"&:hover":{boxShadow:"0px 0px 10px grey",transform:"translateY(-5px)",transition:"all 0.3s"}}}>
                     <HeadsetMicRoundedIcon sx={{fontSize:"50px",color:"#527dc7",padding:"0px 15px"}}/>
                     <Box>
                       <Typography variant="h6" color="initial">24/7 Support & Assistance</Typography>
@@ -176,27 +182,3 @@ const Home = () => {
 }
 
 export default Home
-
-// Hero Section
-
-// Specializations Search
-
-// How It Works
-
-// Features
-
-// Stats / Achievements
-
-// Why Choose Us
-
-// Patient Success Stories (optional)
-
-// Testimonials
-
-// Safety & Security
-
-// FAQ
-
-// Final Call-to-Action (CTA)
-
-// Footer

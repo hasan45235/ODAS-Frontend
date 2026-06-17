@@ -124,7 +124,7 @@ const PatientDash = () => {
             <Fade in={open}>
               <Box sx={Style}>
                 <Box sx={{maxHeight:"80vh",overflowY:"scroll",p:3}}>
-                  {btnState === "Book Appointment" ? <AddAppointment /> : <MyAppointments btnState={btnState}/>}
+                  {btnState === "Book Appointment" ? <AddAppointment close={() => setOpen(false)} modal="modal" /> : <MyAppointments btnState={btnState}/>}
                 </Box>
               </Box>
             </Fade>

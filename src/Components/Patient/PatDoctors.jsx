@@ -10,7 +10,19 @@ import {
   Avatar,
 } from "@mui/material";
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import AddAppointments from './AddAppointment'
 
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: "70%",
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
 
 const modalStyle = {
   position: "absolute",
@@ -45,6 +57,9 @@ const PatDoctors = () => {
 
   const doctors = allUsers.filter((user)=>(user.role === "doctor"))
 
+  const [open2, setOpen2] = useState(false);
+  const handleOpen2 = () => setOpen2(true);
+  const handleClose2 = () => setOpen2(false);
 
   const [open, setOpen] = useState(false);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
@@ -127,14 +142,24 @@ const PatDoctors = () => {
                       <InfoRow label="Qualification" value={`${selectedDoctor?.qualification}`} />
                       <InfoRow label="Experience" value={`${selectedDoctor?.experience} years`} />
                       <InfoRow label="Gender" value={selectedDoctor?.gender} />
-                      <InfoRow label="Consultation Fee" value={`Rs. ${selectedDoctor?.fee}`} />
+                      <InfoRow label="Consultation Fee(lowest)" value={`Rs. ${selectedDoctor?.fee}`} />
                     </Box>
-                    <Button fullWidth variant="contained" sx={{ mt: 3 }} disabled={selectedDoctor?.status === "in-active" ? true : false}> Book Appointment</Button>
+                    <Button fullWidth variant="contained" sx={{ mt: 3 }} onClick={handleOpen2} disabled={selectedDoctor?.status === "in-active" ? true : false}> Book Appointment</Button>
                     </>
                     )}
                   </Box>
                 </Fade>
               </Modal>
+      <Modal
+        open={open2}
+        onClose={handleClose2}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <AddAppointments doctor={selectedDoctor} />
+        </Box>
+      </Modal>
             </Box>
           </Box>
       </Box>

@@ -107,7 +107,7 @@ const AddAvaibility = (props) => {
     return(
       <>
             <Box>
-              <Box component="form" autoComplete="off" sx={{m:4,p:4}} onSubmit={(e) => {submitform()}} >
+              <Box component="form" autoComplete="off" sx={{m:4,p:4}} onSubmit={() => {submitform()}} >
                 <Typography variant="h5" sx={{fontWeight:"bold"}} color="initial">{action ? "Edit your Schedule" : "Add Schedule"}</Typography>
                 <Box sx={{display:"flex",justifyContent:"space-between",alignItems:"flex-end",mt:3}}>
                 <TextField sx={{  width: "32%"}} value={formData?.hospitalName} name='hospitalName' onChange={(e)=>{onChange(e)}} id="outlined-basic" label="Clinic/Hospital Name" variant="outlined" />
