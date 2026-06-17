@@ -3,8 +3,8 @@ import ScheduleContext from "./scheduleContext";
 
 const ScheduleState = ({children}) => {
   
-    const API = 'http://localhost:5000/availability';
-    const API_2 = 'http://localhost:5000/availability/doctorAvailability';
+    const API = 'https://odas-backend.vercel.app/availability';
+    const API_2 = 'https://odas-backend.vercel.app/availability/doctorAvailability';
 
     const [schedule, setSchedule] = useState([])
 

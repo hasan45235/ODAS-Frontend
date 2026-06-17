@@ -1,8 +1,8 @@
 import { Box, Toolbar, Typography } from '@mui/material'
 import React, { useContext, useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
-import DashboardSidebar from '../Components/SideBar'
-import AuthContext from '../authContext'
+import DashboardSidebar from '../SideBar'
+import AuthContext from '../../authContext'
 
 const Profile = () => {
 

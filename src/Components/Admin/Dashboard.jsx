@@ -1,8 +1,8 @@
 import { Box, Toolbar, Typography } from '@mui/material'
 import React from 'react'
-import SideBar from '../Components/SideBar'
+import SideBar from '../SideBar'
 import { Outlet } from 'react-router-dom'
-import Card from '../Components/Card'
+import Card from '../Card'
 import PersonIcon from '@mui/icons-material/Person';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import PendingActionsIcon from '@mui/icons-material/PendingActions';
@@ -15,7 +15,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
 
-const AdminDash = () => {
+const Dashboard = () => {
   return (
     <>
       <Box sx={{ display: "flex" }}>
@@ -66,4 +66,4 @@ const AdminDash = () => {
   )
 }
 
-export default AdminDash
+export default Dashboard

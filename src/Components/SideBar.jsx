@@ -37,9 +37,11 @@ const DashboardSidebar = () => {
   const navItems = {
     admin:[
       { text: "Dashboard", icon: <DashboardIcon />, path: "/admin/dashboard" },
-      { text: "Patients", icon: <PersonIcon />, path: "/admin/patient" },
-      { text: "Doctors", icon: <i className="fa-solid fa-user-doctor fa-lg" ></i>, path: "/dashboard/doctor" },
-      { text: "Controls", icon: <SettingsIcon />, path: "/dashboard/settings" },
+      { text: "Profile", icon: <PersonIcon />, path: "/admin/profile" },
+      { text: "Doctors", icon: <i className="fa-solid fa-user-doctor fa-lg" ></i>, path: "/admin/doctors" },
+      { text: "Patients", icon: <PersonIcon />, path: "/admin/patients" },
+      { text: "Appointments", icon: <AppRegistrationIcon />, path: "/admin/appointments" },
+      { text: "Controls", icon: <SettingsIcon />, path: "/admin/settings" },
     ],
     doctor:[
       { text: "Dashboard", icon: <DashboardIcon />, path: "/doctor/dashboard" },

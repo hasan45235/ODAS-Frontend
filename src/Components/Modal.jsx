@@ -68,8 +68,8 @@ function CompModal(props) {
                   <Typography variant="body1" sx={clickedUser?.status === "active" ? {backgroundColor:"#1da224ff",color:"white",fontSize:"8px",p:"2px 4px",borderRadius:"5px" } : {backgroundColor:"#a21d1dff",color:"white",fontSize:"8px",p:"2px 4px",borderRadius:"5px"  }}>{firstCapital(clickedUser?.status)}</Typography>
                 </Box>
                 <Box sx={{display:"flex"}}>
-                  <Typography variant="body1" sx={{ fontSize: 15 , color:"#9f9c9cff",fontSize:"12px"}}>Age: { clickedUser?.age} |</Typography>
-                  <Typography variant="body1" sx={{ fontSize: 15 , color:"#9f9c9cff",fontSize:"12px"}}>&nbsp;Gender:  { clickedUser?.gender}</Typography>
+                  <Typography variant="body1" sx={{ fontSize: 15 , color:"#9f9c9cff"}}>Age: { clickedUser?.age} |</Typography>
+                  <Typography variant="body1" sx={{ fontSize: 15 , color:"#9f9c9cff"}}>&nbsp;Gender:  { clickedUser?.gender}</Typography>
                 </Box><hr />
                 <Box sx={{display:"flex"}}>
                   <Box>

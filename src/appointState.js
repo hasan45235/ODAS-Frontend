@@ -6,9 +6,9 @@ const AppointmentsState = ({children}) => {
   const [appointments, setAppointments] = useState([]);
   const [specificAppointments,setSpecificAppointments] = useState([])
 
-  const API = "http://localhost:5000/appointments"
-  const API_PAT = "http://localhost:5000/appointments/PatAppointments"
-  const API_DOC = "http://localhost:5000/appointments/DocAppointments"
+  const API = "https://odas-backend.vercel.app/appointments"
+  const API_PAT = "https://odas-backend.vercel.app/appointments/PatAppointments"
+  const API_DOC = "https://odas-backend.vercel.app/appointments/DocAppointments"
 
   const addAppointment = async (data , id)=>{
     const response = await fetch(API, {

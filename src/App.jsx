@@ -6,12 +6,12 @@ import Login from "./Pages/Login";
 import Signup from "./Pages/Signup";
 import ProtectedRoute from "./protectedRoute";
 // Admin Imports
-import Appointments from "./Pages/Appointments";
-import Patients from "./Pages/Patients";
-import Profile from "./Pages/Profile";
-import Controls from "./Pages/Controls";
-import Doctors from "./Pages/Doctors";
-import Dashboard from "./Pages/Dashboard";
+import Appointments from "./Components/Admin/Appointments";
+import Patients from "./Components/Admin/Patients";
+import Profile from "./Components/Admin/Profile";
+import Controls from "./Components/Admin/Controls";
+import Doctors from "./Components/Admin/Doctors";
+import Dashboard from "./Components/Admin/Dashboard";
 // Patient Imports
 import PatientDash from "./Components/Patient/PatientDash";
 import PatAppointments from "./Components/Patient/PatAppointments";

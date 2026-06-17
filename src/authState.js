@@ -5,9 +5,9 @@ import {  useNavigate } from "react-router-dom";
 
 const AuthState = (props) => {
   
-    const API_Create = "http://localhost:5000/auth/createUser"
-    const API_Login = "http://localhost:5000/auth/loginUser"
-    const API_GETUSERS = "http://localhost:5000/auth/getAllUsers"
+    const API_Create = "https://odas-backend.vercel.app/auth/createUser"
+    const API_Login = "https://odas-backend.vercel.app/auth/loginUser"
+    const API_GETUSERS = "https://odas-backend.vercel.app/auth/getAllUsers"
     
     const [authToken, setAuthToken] = useState({token:null,role:null,isLoading: true});
     
@@ -157,7 +157,7 @@ const AuthState = (props) => {
 
     const fetchCurrentUser = async () => {
       try {
-          const response = await fetch("http://localhost:5000/auth/getUser",{
+          const response = await fetch("https://odas-backend.vercel.app/auth/getUser",{
               method:"GET",
               headers: {
                   'Content-Type': 'application/json',

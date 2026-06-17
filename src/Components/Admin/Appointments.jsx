@@ -1,11 +1,11 @@
 // eslint-disable-next-line
 import React, {  useContext, useEffect, useRef } from 'react'
-import SideBar from '../Components/SideBar'
+import SideBar from '../SideBar'
 import { Box, Button, Toolbar } from '@mui/material'
 import { Outlet } from 'react-router-dom'
-import AddAvaibility from '../Components/Doctor/AddAvaibility'
-import ScheduleContext from '../scheduleContext'
-import AuthContext from '../authContext'
+import AddAvaibility from '../Doctor/AddAvaibility'
+import ScheduleContext from '../../scheduleContext'
+import AuthContext from '../../authContext'
 
 const Appointments = () => {
   

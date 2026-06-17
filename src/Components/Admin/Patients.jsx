@@ -1,7 +1,7 @@
-import { Box, Button, Toolbar } from '@mui/material'
-import React, {useContext, useEffect, useRef} from 'react'
+import { Box, Toolbar } from '@mui/material'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Outlet } from 'react-router-dom'
-import DashboardSidebar from '../Components/SideBar'
+import DashboardSidebar from '../SideBar'
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -9,33 +9,27 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import Modal from '../Components/Modal';
-import AddIcon from '@mui/icons-material/Add';
-import AuthContext from '../authContext';
-import AddDoctorModal from '../Components/AddDoctorModal';
+import Modal from '../Modal';
+import AuthContext from '../../authContext';
 
-const Doctors = () => {
+const Patients = () => {
+  
+  const patRef = useRef()
 
   const context = useContext(AuthContext)
-  // eslint-disable-next-line
-  const { addDoctor , fetchUsers , allUsers} = context
+  const {fetchUsers , allUsers} = context
 
-  const docRef = useRef()
-  const addDocRef = useRef()
+
+  const [clickedUser,setClickedUser] = useState({})
   
-
-  const checkUserDoctor = (user) =>{
+  const checkUserPatient = (user) =>{
     
-    return user.role === "doctor"
+    return user.role === "patient"
   }
-  const allDoctors = allUsers.filter((user)=>(checkUserDoctor(user)))
-
-  const doctorcheck = () => {
-    console.log(allDoctors)
-  }
+  const allPatients = allUsers.filter((user)=>(checkUserPatient(user)))
 
   useEffect(()=>{
-    fetchUsers();
+    fetchUsers()
     // eslint-disable-next-line
   },[])
 
@@ -46,14 +40,13 @@ const Doctors = () => {
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <Toolbar />
           <Outlet />
-          <AddDoctorModal docRef={addDocRef} />
-          <Button variant="contained" onClick={()=>{addDocRef.current.click()}} endIcon={<AddIcon />}>Add a Doctor</Button>
+
           <Box>
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    <TableCell >Doctor Id</TableCell>
+                    <TableCell >Patients Id</TableCell>
                     <TableCell >Name</TableCell>
                     <TableCell >Age</TableCell>
                     <TableCell >Contact</TableCell>
@@ -61,12 +54,10 @@ const Doctors = () => {
                   </TableRow>
               </TableHead>
               <TableBody>
-                {allDoctors.map((user)=>{
+                {allPatients.map((user)=>{
                   return (
-                    
                     <TableRow
-
-                    onClick={()=>{docRef.current.click()}}
+                    onClick={()=>{patRef.current.click();setClickedUser(user)}}
                     key={user._id}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     >
@@ -77,20 +68,18 @@ const Doctors = () => {
                       <TableCell >{user.status}</TableCell>
                     </TableRow>
                     
-                  )
-                })}
+                    )
+                  })}
                   
                 </TableBody>
               </Table>
             </TableContainer>
           </Box>
-          <Button onClick={()=>{doctorcheck()}}>click me</Button>     
-          <Modal refs={docRef}/>
+          <Modal refs={patRef} clickedUser={clickedUser}/>
         </Box>
       </Box>
     </>
-
   )
 }
 
-export default Doctors
+export default Patients
