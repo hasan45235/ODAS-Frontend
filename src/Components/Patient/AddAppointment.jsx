@@ -12,7 +12,7 @@ import AppointmentsContext from '../../AppointmentsContext';
 
 
 const AddAppointment = (props) => {
-  const { close, modal, doctor } = props;
+  const { close, modal, doctor, closeDoc, closeDocAdd } = props;
 
   // Context hooks
   const context = useContext(AppointmentsContext);
@@ -172,14 +172,6 @@ const handleScheduleChange = (event, newValue) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    // Validation
-    if (!data.doctorId || !data.hospitalId || !data.bookedDate || !data.bookedSlot) {
-      // You might want to show a snackbar or alert here
-      alert("Please fill all required fields");
-      return;
-    }
-
     addAppointment(data, currentUser._id);
     resetForm();
     
@@ -191,12 +183,23 @@ const handleScheduleChange = (event, newValue) => {
   // Effects
   useEffect(() => {
     fetchAllApointments();
+      
     fetchUsers();
     fetchSchedule();
     fetchCurrentUser();
     // eslint-disable-next-line
   }, []);
 
+  useEffect(() => {
+  if (doctor) {
+    setSelectedDoctor(doctor);
+
+    setData(prev => ({
+      ...prev,
+      doctorId: doctor._id
+    }));
+  }
+}, [doctor]);
   // Determine if date picker should be disabled
   const isDatePickerDisabled = !selectedDoctor;
 
@@ -230,7 +233,11 @@ const handleScheduleChange = (event, newValue) => {
         component="form" 
         autoComplete="off" 
         sx={{ m: 4, p: 4 }}
-        onSubmit={handleSubmit}
+        onSubmit={(e) => {
+          handleSubmit(e);
+          closeDoc();
+          closeDocAdd();
+        }}
       >
         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <Typography variant="h5" sx={{ fontWeight: "bold" }} color="initial">
@@ -249,7 +256,7 @@ const handleScheduleChange = (event, newValue) => {
             <Autocomplete
               disablePortal
               fullWidth
-              value={doctor ? doctor.name : selectedDoctor}
+              value={doctor || selectedDoctor}
               disabled={!!doctor} // Disable if doctor prop is passed
               onChange={handleDoctorChange}
               options={doctor ? [doctor] : doctors}

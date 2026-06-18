@@ -107,7 +107,7 @@ const AddAvaibility = (props) => {
     return(
       <>
             <Box>
-              <Box component="form" autoComplete="off" sx={{m:4,p:4}} onSubmit={() => {submitform()}} >
+              <Box component="form" autoComplete="off" sx={{m:4,p:4}} onSubmit={(e) => {submitform(e)}} >
                 <Typography variant="h5" sx={{fontWeight:"bold"}} color="initial">{action ? "Edit your Schedule" : "Add Schedule"}</Typography>
                 <Box sx={{display:"flex",justifyContent:"space-between",alignItems:"flex-end",mt:3}}>
                 <TextField sx={{  width: "32%"}} value={formData?.hospitalName} name='hospitalName' onChange={(e)=>{onChange(e)}} id="outlined-basic" label="Clinic/Hospital Name" variant="outlined" />
@@ -153,7 +153,7 @@ const AddAvaibility = (props) => {
                 </LocalizationProvider>
                 <TextField  id="outlined-basic" value={formData?.slotDuration} name='slotDuration' onChange={(e)=>{onChange(e)}} label="Slot Duration" type='Number' variant="outlined" sx={{width: "32%", "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": { WebkitAppearance: "none", margin: 0, }, "& input[type=number]": { MozAppearance: "textfield", },}} slotProps={{ input: { endAdornment: ( <InputAdornment position="end" sx={{ opacity: 0, pointerEvents: 'none', [`[data-shrink=true] ~ .${inputBaseClasses.root} > &`]: { opacity: 1,}, }}> mins </InputAdornment> ), },}}/>
                 </Box>
-                <Button type='submit' variant="contained" sx={{width: "25%",p:1,mt:2}}>Confirm</Button>
+                <Button type='submit' variant="contained" sx={{width: "25%",p:1,mt:2}}>Add</Button>
               </Box>
             </Box>
         

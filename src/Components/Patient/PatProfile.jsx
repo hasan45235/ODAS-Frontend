@@ -39,15 +39,17 @@ const PatProfile = () => {
   const { currentUser , fetchCurrentUser} = context
 
   const [error, setError] = useState({state:false,text:""})
+  const [open, setOpen] = useState(false);
+  const handleOpen = () =>{
+    setOpen(true);
+    setError({state:false,text:""})
+    console.log(dataArr)
 
-    const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
+  } 
   const handleClose = () => setOpen(false);
 
-  
   const genderArr = ['Male', 'Female', 'Other'];
   const [ dataArr, setDataArr] = useState({name:"", email:"",  age:"", contact:"", gender:"", address:"",role:"patient"});
-    
 
   useEffect(() => {
     fetchCurrentUser();
@@ -64,12 +66,13 @@ const PatProfile = () => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
+  
           <Card component="form" autoComplete="off" sx={{width:"100%",display:"flex",justifyContent:"space-between" }} onSubmit={(e) => {e.preventDefault();}} >
 
           <Box sx={{width:"100%", p:4,pt:6}}>
           <Box sx={{display:"flex", justifyContent:"space-between", alignItems:"center", mb:3}}>
             <TextField id="outlined-basic name" value={currentUser?.name || ""} label="Name"  name='name' variant="outlined"  required/>
-            <TextField id="outlined-basic email" value={currentUser?.email || ""} label="Email" error={error.state && error.text === "Sorry a user with this email already exists" ? Boolean(error.state) : ""} helperText={error.state && error.text === "Sorry a user with this email already exists" ? error.text : ""} type='email' name='email' variant="outlined"  required/>
+            <TextField id="outlined-basic email" disabled={true} value={currentUser?.email || ""} label="Email" error={error.state && error.text === "Sorry a user with this email already exists" ? Boolean(error.state) : ""} helperText={error.state && error.text === "Sorry a user with this email already exists" ? error.text : ""} type='email' name='email' variant="outlined"  required/>
             <TextField id="outlined-basic age" value={currentUser?.age || ""} label="Age" type='number' name='age'  variant="outlined" required/>
           </Box>
           <Box sx={{display:"flex", justifyContent:"space-between", alignItems:"center", mb:3}}>
@@ -77,7 +80,7 @@ const PatProfile = () => {
             <Autocomplete disablePortal options={genderArr} value={currentUser?.gender || ""} onChange={(event, newValue) => {setDataArr((prev) => ({...prev,gender: newValue ? newValue : "" }));}} sx={{ width: "30ch" }} renderInput={(params) => <TextField {...params} label="Gender" name='gender' />}/>
             <TextField id="outlined-basic address" value={currentUser?.address || ""} label="Address" name='address' variant="outlined"   required  />
           </Box>
-          <Button variant="contained" color="primary" type="submit">Sign-up</Button>
+          <Button variant="contained" color="primary" type="submit">Update</Button>
           </Box>
         </Card>
         </Box>

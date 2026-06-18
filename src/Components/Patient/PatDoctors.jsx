@@ -14,7 +14,7 @@ import AddAppointments from './AddAppointment'
 
 const style = {
   position: 'absolute',
-  top: '50%',
+  top: '40%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: "70%",
@@ -157,7 +157,7 @@ const PatDoctors = () => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <AddAppointments doctor={selectedDoctor} />
+          <AddAppointments doctor={selectedDoctor} closeDoc={handleClose2} closeDocAdd={handleClose}/>
         </Box>
       </Modal>
             </Box>
