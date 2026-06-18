@@ -8,6 +8,7 @@ const AuthState = (props) => {
     const API_Create = "https://odas-backend.vercel.app/auth/createUser"
     const API_Login = "https://odas-backend.vercel.app/auth/loginUser"
     const API_GETUSERS = "https://odas-backend.vercel.app/auth/getAllUsers"
+    const API = "https://odas-backend.vercel.app"
     
     const [authToken, setAuthToken] = useState({token:null,role:null,isLoading: true});
     
@@ -143,6 +144,28 @@ const AuthState = (props) => {
             console.log("error",error)
         }
     }
+    
+    const updateUser = async (data) =>{
+        try {
+            const response = await fetch(`${API}/auth/updateUser`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'auth-token': localStorage.getItem('authToken')
+                },
+                body: JSON.stringify(data)
+            });
+            const json = await response.json();
+            if (response.ok){
+              console.log("User Updated Successfully :",json);
+            }
+            else{
+              console.log("Failed to update user:", json);
+            }
+        } catch (error) {
+            console.log("error",error)
+        }
+    }
 
 
     const fetchUsers = async () => {
@@ -150,7 +173,7 @@ const AuthState = (props) => {
             const response = await fetch(API_GETUSERS,{
                 method:"GET",
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
                 }
             })
             const json = await response.json()
@@ -179,7 +202,7 @@ const AuthState = (props) => {
   }
 
   return (
-    <AuthContext.Provider value={{ createUser , loginUser , authToken , addDoctor , fetchUsers , allUsers , logout , currentUser , fetchCurrentUser }}>
+    <AuthContext.Provider value={{ createUser , loginUser , authToken , addDoctor , fetchUsers , allUsers , logout , currentUser , fetchCurrentUser , updateUser}}>
         {props.children}
     </AuthContext.Provider>
   );

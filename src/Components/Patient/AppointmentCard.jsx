@@ -1,5 +1,5 @@
-import { Card, CardContent, Typography, Box, Chip, Divider, Button, IconButton } from "@mui/material";
-import { useRef, useState } from "react";
+import { Card, CardContent, Typography, Box, Chip, Divider,  IconButton } from "@mui/material";
+import {  useState } from "react";
 import Backdrop from '@mui/material/Backdrop';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
@@ -8,8 +8,9 @@ import { Visibility } from "@mui/icons-material";
 
 const statusColorMap = {
   pending: "warning",
-  confirmed: "success",
-  cancelled: "error",
+  approved: "primary",
+  rejected: "error",
+  completed: "success"
 };
 
 
@@ -50,7 +51,6 @@ const InfoBlock = ({ label, value, subValue }) => (
 
 const AppointmentCard = (props) => {
 
-    const showRef = useRef(null)
 
     const {appointment , patient , doctor } = props
     
@@ -70,7 +70,7 @@ const AppointmentCard = (props) => {
           <Typography variant="h6" fontWeight={600}>
             {appointment.hospitalName}
           </Typography>
-          <IconButton aria-label="view" color="primary" onClick={()=>showRef.current.click()}>
+          <IconButton aria-label="view" color="primary" onClick={handleOpen}>
             <Visibility/>
           </IconButton>
         </Box>
@@ -124,7 +124,6 @@ const AppointmentCard = (props) => {
 
       </CardContent>
     </Card>
-    <Button onClick={handleOpen} sx={{display:"none"}} ref={showRef}>Open modal</Button>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -143,7 +142,7 @@ const AppointmentCard = (props) => {
               <Box sx={{ p: 2.5,     bgcolor: "background.paper", borderRadius: 3, boxShadow: "0 10px 30px rgba(0,0,0,0.08)"}}>
                 <Box sx={{display: "flex", justifyContent: "space-between", alignItems: "center", mb: 1.5,}}>
                   <Typography fontWeight={600} fontSize={16}>{appointment?.hospitalName}</Typography>
-                  <Chip label={appointment?.status} color="warning" size="small" sx={{ fontWeight: 600 }}/>
+                  <Chip label={appointment?.status} color={statusColorMap[appointment?.status] || "default"} size="small" sx={{ fontWeight: 600 }}/>
                 </Box>
                 <Divider sx={{m:2}} />
                 <Box sx={{ display: "flex", justifyContent:"space-between",mt:5}}>

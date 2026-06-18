@@ -11,11 +11,11 @@ import AuthContext from '../authContext';
 const Signup = () => {
 
   const context = useContext(AuthContext);
-  const {createUser , allUsers , fetchUsers} = context;
+  const {createUser ,  fetchUsers} = context;
 
-  const totalUsers = (allUsers.length + 1)
+  // const totalUsers = (allUsers.length + 1)
 
-  const [ dataArr, setDataArr] = useState({receiptNum:`${totalUsers}`,name:"", email:"", password:"", age:"", contact:"", gender:"", address:"",role:"patient"});
+  const [ dataArr, setDataArr] = useState({name:"", email:"", password:"", age:"", contact:"", gender:"", address:"",role:"patient"});
   
   const [error, setError] = useState({"state": false, "text": ""});
 

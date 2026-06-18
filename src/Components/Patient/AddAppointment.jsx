@@ -9,7 +9,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import AppointmentsContext from '../../AppointmentsContext';
-
+import Swal from 'sweetalert2' 
 
 const AddAppointment = (props) => {
   const { close, modal, doctor, closeDoc, closeDocAdd } = props;
@@ -173,6 +173,13 @@ const handleScheduleChange = (event, newValue) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     addAppointment(data, currentUser._id);
+    Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "Your Appointment is generated",
+      showConfirmButton: false,
+      timer: 2000
+    });
     resetForm();
     
     if (modal === "modal" && close) {
@@ -183,7 +190,6 @@ const handleScheduleChange = (event, newValue) => {
   // Effects
   useEffect(() => {
     fetchAllApointments();
-      
     fetchUsers();
     fetchSchedule();
     fetchCurrentUser();
@@ -236,7 +242,7 @@ const handleScheduleChange = (event, newValue) => {
         onSubmit={(e) => {
           handleSubmit(e);
           closeDoc();
-          closeDocAdd();
+          closeDocAdd()
         }}
       >
         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>

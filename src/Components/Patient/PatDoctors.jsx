@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import AddAppointments from './AddAppointment'
+import { Oval } from 'react-loader-spinner';
 
 const style = {
   position: 'absolute',
@@ -91,8 +92,13 @@ const PatDoctors = () => {
                 <Typography variant="h5" fontWeight={600} >Available Doctors</Typography>
               </Box>
               <Divider sx={{mb:5}}/>
-              <Box sx={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: 2 }}>
-                {doctors.map((doctor) => (
+                {doctors.length === 0 ? (
+                  <Box sx={{width:"100%",display:"flex",justifyContent:"center",alignItems:"center",height:"80vh"}}>
+                    <Oval  height="14vh" width="14vw" color="#1976d2" visible={true} ariaLabel="oval-loading" secondaryColor="#1976d2" strokeWidth={2} strokeWidthSecondary={2} />
+                  </Box>
+                  ) : (
+                    <Box sx={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: 2 }}>
+                  {doctors.map((doctor) => (
                   <Card key={doctor._id} sx={{ borderRadius: 3, boxShadow: 3 }}>
                     <CardContent>
                       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -116,8 +122,9 @@ const PatDoctors = () => {
                       </Box>
                     </CardContent>
                   </Card>
-                ))}
-              </Box>
+                  ))}
+                  </Box>
+                )}
               <Modal
                 open={open}
                 onClose={handleClose}
@@ -157,7 +164,7 @@ const PatDoctors = () => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <AddAppointments doctor={selectedDoctor} closeDoc={handleClose2} closeDocAdd={handleClose}/>
+          <AddAppointments doctor={selectedDoctor} closeDoc={()=>handleClose2()} closeDocAdd={()=>handleClose()}/>
         </Box>
       </Modal>
             </Box>

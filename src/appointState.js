@@ -22,6 +22,7 @@ const AppointmentsState = ({children}) => {
     const json = await response.json();
     console.log(json)
     fetchAllApointments()
+    fetchPatAppointments()
   }
     
   const fetchAllApointments = async () => {
