@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import DashboardSidebar from "../SideBar"
 import MySchedules from './MySchedules'
-import AddAvaibility from './AddAvaibility'
+import AddAvaibility from './AddSchedule'
 
 const DocSchedule = () => {
   

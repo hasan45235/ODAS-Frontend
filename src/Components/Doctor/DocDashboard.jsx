@@ -11,6 +11,8 @@ import AppointmentsContext from '../../AppointmentsContext'
 import AuthContext from '../../authContext'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
+import { Oval } from 'react-loader-spinner'
+
 
 
 const InfoRow = ({ appointment , patient , type }) => {
@@ -88,12 +90,17 @@ const DocDashboard = () => {
                   <Typography variant="h5" sx={{fontWeight:"bold"}} color="initial">Pending Requests</Typography>
                   <Divider sx={{mb:3,mt:3}}/>
                   <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}>
-                    {pendingApp.map((appointment)=>{
-                      const patient = allUsers.filter((item)=> item._id === appointment.patientId)
-                      return (
-                        <InfoRow appointment={appointment} patient={patient} type="Pending"/>
-                      )
-                    })}
+                    {pendingApp == 0 || pendingApp == null ? (
+                      <Box sx={{width:"100%",display:"flex",justifyContent:"center"}}>
+                        <Oval  height="14vh" width="14vw" color="#1976d2" visible={true} ariaLabel="oval-loading" secondaryColor="#1976d2" strokeWidth={2} strokeWidthSecondary={2} />
+                      </Box>
+                    ) : (
+                      pendingApp.map((appointment)=>{
+                        const patient = allUsers.filter((item)=> item._id === appointment.patientId)
+                        return (
+                          <InfoRow appointment={appointment} patient={patient} type="Pending"/>
+                        )
+                      }))}
                   </Box>
                 </CardContent>
               </Card>
@@ -102,12 +109,17 @@ const DocDashboard = () => {
                   <Typography variant="h5" sx={{fontWeight:"bold"}} color="initial">Today's Schedule</Typography>
                   <Divider sx={{mb:3,mt:3}}/>
                   <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}>
-                    {todayApp.map((appointment)=>{
+                    {todayApp == 0 || todayApp == null ? (
+                      <Box sx={{width:"100%",display:"flex",justifyContent:"center"}}>
+                        <Oval  height="14vh" width="14vw" color="#1976d2" visible={true} ariaLabel="oval-loading" secondaryColor="#1976d2" strokeWidth={2} strokeWidthSecondary={2} />
+                      </Box>
+                    ) : (
+                    todayApp.map((appointment)=>{
                       const patient = allUsers.filter((item)=> item._id === appointment.patientId)
                       return (
                         <InfoRow appointment={appointment} patient={patient} type="Today"/>
                       )
-                    })}
+                    }))}
                   </Box>
                 </CardContent>
               </Card>

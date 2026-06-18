@@ -12,7 +12,8 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import { useContext, useEffect, useState } from "react";
 import ScheduleContext from "../../scheduleContext";
-import AddAvaibility from "./AddAvaibility";
+import AddAvaibility from "./AddSchedule";
+import {Oval} from 'react-loader-spinner'
 
 
 const Style = {
@@ -45,15 +46,21 @@ const MySchedules = () => {
   useEffect(()=>{
     fetchSpecificSchedule();
     // eslint-disable-next-line
-  },[])
+  },[specificSchedule])
 
 
   return (
     <Box sx={{p:4}}>
+      {specificSchedule.length === 0 || !specificSchedule ? (
+        <Box sx={{width:"100%",display:"flex",justifyContent:"center"}}>
+          <Oval  height="14vh" width="14vw" color="#1976d2" visible={true} ariaLabel="oval-loading" secondaryColor="#1976d2" strokeWidth={2} strokeWidthSecondary={2} />
+        </Box>
+      ) : (<>
 
-    {specificSchedule.map((schedule)=>{                    
-    return(
-    <Card key={schedule._id} sx={{ borderRadius: 3, boxShadow: 3,mb:3}}>
+        
+        {specificSchedule.map((schedule)=>{                    
+          return(
+            <Card key={schedule._id} sx={{ borderRadius: 3, boxShadow: 3,mb:3}}>
       <CardContent>
         <Stack direction="row" justifyContent="space-between" alignItems="center">
           <Typography variant="h6" fontWeight={600}> {schedule.hospitalName} </Typography>
@@ -76,7 +83,8 @@ const MySchedules = () => {
       </CardContent>
     </Card>
     )
-    })}
+  })}
+  </>)}
     <Modal
       open={open}
       onClose={handleClose}

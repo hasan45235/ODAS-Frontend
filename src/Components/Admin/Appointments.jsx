@@ -3,7 +3,7 @@ import React, {  useContext, useEffect, useRef } from 'react'
 import SideBar from '../SideBar'
 import { Box, Button, Toolbar } from '@mui/material'
 import { Outlet } from 'react-router-dom'
-import AddAvaibility from '../Doctor/AddAvaibility'
+import AddAvaibility from '../Doctor/AddSchedule'
 import ScheduleContext from '../../scheduleContext'
 import AuthContext from '../../authContext'
 

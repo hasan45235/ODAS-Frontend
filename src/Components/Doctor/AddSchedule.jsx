@@ -13,7 +13,7 @@ import { inputBaseClasses } from '@mui/material/InputBase';
 import ScheduleContext from '../../scheduleContext';
 import AuthContext from '../../authContext';
 import dayjs from "dayjs";
-
+import Swal from 'sweetalert2';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -37,27 +37,21 @@ function getStyles(name, personName, theme) {
 }
 
 
-const AddAvaibility = (props) => {
+const AddSchedule = (props) => {
 
+  // props
     const {handleClose , schedule , action} = props
 
 
-
+  // contexts
     const context = useContext(ScheduleContext)
     const {addSchedule , updateSchedule} = context;
 
     const context2 = useContext(AuthContext)
     const {fetchCurrentUser , currentUser} = context2;
-
+  
+  // states
     const [data , setData] = useState({hospitalName:"", fees:"", days:[], startTime:null, endTime:null, slotDuration:""});
-    
-    const doctorId = currentUser ? currentUser._id : null;
-
-    const onChange = (e) => {
-      setFormData({...formData,[e.target.name]: e.target.value})
-    }
-
-    
     
     const [editData,setEditData] = useState({
       hospitalName:schedule?.hospitalName,
@@ -67,6 +61,17 @@ const AddAvaibility = (props) => {
       slotDuration:schedule?.slotDuration,
       days:schedule?.days
     })
+    
+    
+    
+    const doctorId = currentUser ? currentUser._id : null;
+
+    const onChange = (e) => {
+      setFormData({...formData,[e.target.name]: e.target.value})
+    }
+
+    
+    
 
     const formData = action === "Edit" ? editData : data;
     const setFormData = action === "Edit" ? setEditData : setData;
@@ -75,6 +80,13 @@ const AddAvaibility = (props) => {
 
     const updateData = () => {
       updateSchedule(editData , editDataId)
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Schedule Updated Successfully",
+        showConfirmButton: false,
+        timer: 2000
+      });
     }
 
     const theme = useTheme();
@@ -86,6 +98,15 @@ const AddAvaibility = (props) => {
 
     const addData = () => {
       addSchedule(data, doctorId);
+      setData({hospitalName:"", fees:"", days:[], startTime:null, endTime:null, slotDuration:""});
+
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Schedule Added Successfully",
+        showConfirmButton: false,
+        timer: 2000
+      });
     }
 
     const submitform = (e) => {
@@ -102,7 +123,7 @@ const AddAvaibility = (props) => {
     useEffect(() => {
       fetchCurrentUser();
       // eslint-disable-next-line
-    }, []);
+    }, [currentUser]);
 
     return(
       <>
@@ -162,4 +183,4 @@ const AddAvaibility = (props) => {
 }
 
 
-export default AddAvaibility;
+export default AddSchedule;

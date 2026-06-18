@@ -5,6 +5,7 @@ import DashboardSidebar from "../SideBar"
 import AppointmentsContext from "../../AppointmentsContext"
 import DoctorAppointmentCard from './DocAppointmentCard'
 import AuthContext from '../../authContext'
+import { Oval } from 'react-loader-spinner'
 
 
 const DocAppointment = () => {
@@ -57,7 +58,12 @@ const DocAppointment = () => {
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                      {((filterStatus === "All" || filterStatus === "")  ? specificAppointments : filteredAppointments).map((item, index) => {
+                      {specificAppointments.length === 0 || !specificAppointments ? (
+                        <Box sx={{width:"100%",display:"flex",justifyContent:"flex-end",alignItems:"center"}}>
+                          <Oval  height="14vh" width="14vw" color="#1976d2" visible={true} ariaLabel="oval-loading" secondaryColor="#1976d2" strokeWidth={2} strokeWidthSecondary={2} />
+                        </Box>
+                        ) : (
+                      ((filterStatus === "All" || filterStatus === "")  ? specificAppointments : filteredAppointments).map((item, index) => {
                         const patient = allUsers.find((user) => user._id === item.patientId);
                         return (
                           
@@ -75,7 +81,7 @@ const DocAppointment = () => {
                           </TableRow>
                           
                         );
-                      })}
+                      }))}
                       </TableBody>
                     </Table>
                   </TableContainer>

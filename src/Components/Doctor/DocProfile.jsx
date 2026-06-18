@@ -6,7 +6,7 @@ import AuthContext from '../../authContext'
 import { Typography, Avatar, Paper, Divider, Chip, Button,} from "@mui/material";
 import LocalHospitalOutlinedIcon from "@mui/icons-material/LocalHospitalOutlined";
 import Badge from '@mui/material/Badge';
-
+import {Oval} from 'react-loader-spinner'
 
 const InfoRow = ({ label, value }) => (
   <Box
@@ -34,7 +34,7 @@ const DocProfile = () => {
   useEffect(()=>{
     fetchCurrentUser();
     // eslint-disable-next-line
-  },[])
+  },[currentUser])
 
   return (
     <>
@@ -45,7 +45,13 @@ const DocProfile = () => {
             <Toolbar />
             <Outlet />
             <Paper sx={{ p: 4.5, borderRadius: 4, boxShadow: "0 14px 36px rgba(0,0,0,0.08)", maxWidth: 1000, mx: "auto"}}>
-              <Box sx={{ display: "flex", alignItems: "flex-start", gap: 4, mb: 4 }} >
+              {currentUser?.length === 0 || !currentUser ? (
+                <Box sx={{width:"100%",display:"flex",justifyContent:"center"}}>
+                  <Oval  height="14vh" width="14vw" color="#1976d2" visible={true} ariaLabel="oval-loading" secondaryColor="#1976d2" strokeWidth={2} strokeWidthSecondary={2} />
+                </Box>
+              ) : (<>
+
+                  <Box sx={{ display: "flex", alignItems: "flex-start", gap: 4, mb: 4 }} >
                 <Badge overlap="circular" badgeContent=" " sx={{"@keyframes pulse": {"0%": { boxShadow: "0 0 0 0 rgba(64,223,98,0.7)" },"70%": { boxShadow: "0 0 0 6px rgba(64,223,98,0)" },"100%": { boxShadow: "0 0 0 0 rgba(64,223,98,0)" }}, "& .MuiBadge-badge": { display:currentUser?.status === "active" ? "inline-block" : "none",backgroundColor: "#40df62ff",  color: "#40df62ff", minWidth: 12, height: 12, borderRadius: "50%",boxShadow: "0 0 0 2px white", animation: "pulse 1.8s infinite"}}}  anchorOrigin={{vertical: 'bottom',horizontal: 'right'}}  >
                   <Avatar sx={{ width: 96, height: 96, bgcolor: "primary.main", fontSize: 32}}>{currentUser?.name?.[0]}</Avatar>
                 </Badge>
@@ -80,6 +86,7 @@ const DocProfile = () => {
                 <Typography fontWeight={600} fontSize={18} mb={1.5}>About Doctor</Typography>
                 <Typography color="text.secondary" lineHeight={1.8}>{currentUser?.bio || "No bio available."}</Typography>
               </Box>
+              </>)}
             </Paper>
           </Box>
       </Box>
@@ -89,3 +96,8 @@ const DocProfile = () => {
 }
 
 export default DocProfile
+
+
+
+
+          

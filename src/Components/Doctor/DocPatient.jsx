@@ -4,6 +4,7 @@ import { Outlet } from 'react-router-dom'
 import DashboardSidebar from "../SideBar"
 import AppointmentsContext from '../../AppointmentsContext'
 import AuthContext from '../../authContext'
+import { Oval } from 'react-loader-spinner'
 
 const DocPatients = () => {
 
@@ -53,7 +54,11 @@ const DocPatients = () => {
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                      {completedAppointments.map((item, index) => {
+                      {!completedAppointments || completedAppointments.length === 0 ? (
+                        <Box sx={{width:"100%",display:"flex",justifyContent:"flex-end",alignItems:"center"}}>
+                          <Oval  height="14vh" width="14vw" color="#1976d2" visible={true} ariaLabel="oval-loading" secondaryColor="#1976d2" strokeWidth={2} strokeWidthSecondary={2} />
+                        </Box>
+                      ) : (completedAppointments.map((item, index) => {
                         const patient = allUsers.find((user) => user._id === item.patientId);
                         return (
                           <TableRow key={index} hover sx={{ cursor: "pointer",transition:"0.3s", "&:last-child td": { borderBottom: 0 } }} onClick={() => { showRef.current.click(); setSelectedAppointment({ appointment: item, patient }) }} >
@@ -70,7 +75,7 @@ const DocPatients = () => {
                           </TableRow>
                           
                         );
-                      })}
+                      }))}
                       </TableBody>
                       </Table>
                     </TableContainer>
