@@ -38,6 +38,10 @@ const PatientDash = () => {
 
   const context2 = useContext(AppointmentsContext)
   const {fetchPatAppointments , specificAppointments} = context2
+  
+  const todayDate = new Date().toLocaleDateString("en-GB");
+  const todayApp = specificAppointments.filter((item)=> item.bookedDate === todayDate)
+
 
   const completedApp = specificAppointments.filter((item)=>item.status === "completed")
 
@@ -58,7 +62,7 @@ const PatientDash = () => {
             <Button variant="contained" color="primary" onClick={()=>{handleOpen();setBtnState("My Appointments")}}>View My Appointments</Button>
           </Box>
           <Box sx={{display:"flex",justifyContent:"space-around"}}>
-            <DashCard title='Upcoming Appointments' desc="data" icon={<PendingActionsIcon sx={{fontSize:"50px",color:"#527dc7",padding:"0px 15px",margin:"auto 0px"}}/>} />
+            <DashCard title='Upcoming Appointments' desc={todayApp.length} icon={<PendingActionsIcon sx={{fontSize:"50px",color:"#527dc7",padding:"0px 15px",margin:"auto 0px"}}/>} />
             <DashCard title='Total Appointments' desc={specificAppointments.length} icon={<ListAltIcon sx={{fontSize:"50px",color:"#527dc7",padding:"0px 15px",margin:"auto 0px"}}/>} />
             <DashCard title='Completed Appointments' desc={!completedApp ? 0 : completedApp.length} icon={<OfflinePinIcon sx={{fontSize:"50px",color:"#527dc7",padding:"0px 15px",margin:"auto 0px"}}/>} />
           </Box>

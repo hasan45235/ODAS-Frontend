@@ -14,7 +14,7 @@ const AuthState = (props) => {
     
     const [allUsers , setAllUsers] = useState([])
     
-
+    const [loading,setLoading] = useState(true)
     
     useEffect(()=>{
         const token = localStorage.getItem('authToken')
@@ -167,8 +167,8 @@ const AuthState = (props) => {
         }
     }
 
-
-    const fetchUsers = async () => {
+    
+      const fetchUsers = async () => {
         try {
             const response = await fetch(API_GETUSERS,{
                 method:"GET",
@@ -177,7 +177,33 @@ const AuthState = (props) => {
                 }
             })
             const json = await response.json()
+            if (response.ok){
+              setLoading(false)
+            }
             setAllUsers(json)
+        } catch (error) {
+            console.log("error",error)
+        }
+      }
+    
+      const adminUpdateUser = async(data, id) => {
+        try {
+            const response = await fetch(`${API}/auth/updateUser/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'auth-token': localStorage.getItem('authToken')
+                },
+                body: JSON.stringify(data)
+            });
+            const json = await response.json();
+            if (response.ok){
+              console.log("User Updated Successfully :",json);
+              fetchUsers();
+            }
+            else{
+              console.log("Failed to update user:", json);
+            }
         } catch (error) {
             console.log("error",error)
         }
@@ -202,7 +228,7 @@ const AuthState = (props) => {
   }
 
   return (
-    <AuthContext.Provider value={{ createUser , loginUser , authToken , addDoctor , fetchUsers , allUsers , logout , currentUser , fetchCurrentUser , updateUser}}>
+    <AuthContext.Provider value={{ createUser , loginUser , authToken , addDoctor , fetchUsers , allUsers , logout , currentUser , fetchCurrentUser , updateUser, loading, adminUpdateUser}}>
         {props.children}
     </AuthContext.Provider>
   );

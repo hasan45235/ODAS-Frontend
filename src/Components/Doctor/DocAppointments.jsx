@@ -20,6 +20,8 @@ const DocAppointment = () => {
   const showRef = useRef(null)
   const status = ["All","pending","approved","rejected","completed"]
 
+  const [loading,setLoading] = useState(true)
+
   const [filterStatus, setFilterStatus] = useState("")
 
   const filteredAppointments = specificAppointments.filter((item)=>item.status === filterStatus)
@@ -28,8 +30,9 @@ const DocAppointment = () => {
   useEffect(()=>{
     fetchDocAppointments()
     fetchUsers()
+    setLoading(false)
     //eslint-disable-next-line
-  },[])
+  },[specificAppointments])
 
   return (
     <>
@@ -58,11 +61,15 @@ const DocAppointment = () => {
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                      {specificAppointments.length === 0 || !specificAppointments ? (
+                      {loading ? (
                         <Box sx={{width:"100%",display:"flex",justifyContent:"flex-end",alignItems:"center"}}>
                           <Oval  height="14vh" width="14vw" color="#1976d2" visible={true} ariaLabel="oval-loading" secondaryColor="#1976d2" strokeWidth={2} strokeWidthSecondary={2} />
                         </Box>
-                        ) : (
+                      )
+                       : specificAppointments.length === 0 ? (
+                        <Typography sx={{ p:4 }}>No appointments found.</Typography>
+                      ) 
+                      : (
                       ((filterStatus === "All" || filterStatus === "")  ? specificAppointments : filteredAppointments).map((item, index) => {
                         const patient = allUsers.find((user) => user._id === item.patientId);
                         return (
@@ -88,7 +95,7 @@ const DocAppointment = () => {
                 </CardContent>
               </Card>
               <DoctorAppointmentCard ref={showRef} appointment={selectedAppointment.appointment} patient={selectedAppointment.patient}/>
-            </Box>
+            </Box> 
           </Box>
       </Box>
       </Box>

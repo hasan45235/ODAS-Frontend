@@ -1,35 +1,80 @@
-import { Box, Toolbar } from '@mui/material'
+import { Box, Toolbar, Card, CardContent,  Typography } from '@mui/material'
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import DashboardSidebar from '../SideBar'
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
 import Modal from '../Modal';
 import AuthContext from '../../authContext';
+import { Oval } from 'react-loader-spinner'
+import TaskAltIcon from '@mui/icons-material/TaskAlt';
+import BlockFlippedIcon from '@mui/icons-material/BlockFlipped';
+
+
+
+
+const InfoRow = ({ user , setUser ,type, ref }) => {
+
+  function capitalizeFirstLetter(string) {
+    if (!string) return ""; 
+    return string.charAt(0).toUpperCase() + string.slice(1);
+    
+  }
+  
+
+  
+  // const context = useContext(AppointmentsContext)
+  // const {updateAppointment} = context
+
+  // const handleUpdate = (status , id) => {
+  //   updateAppointment(status , id)
+  // }
+
+  return (<Box onClick={()=>{setUser(user),ref.current.click()}}>
+      {type === "data" ? 
+      (
+      <Box sx={{ display: "flex", justifyContent:"space-between", alignItems:"center", p: 1.5, borderRadius: 2, bgcolor: "background.paper", boxShadow: "0 4px 12px rgba(0,0,0,0.06)", '&:hover':{boxShadow:"0px 0px 5px grey",transition:"0.5s",transform:'translateY(-1px)',cursor:"pointer"}}}>
+        <Typography variant="body1" sx={{ flex: 1 }} color="initial">#0001</Typography>
+        <Box sx={{ flex: 2 }}>
+          <Typography variant="body1" color="initial">{capitalizeFirstLetter(user?.name)}</Typography>
+          <Typography variant="body1" sx={{fontSize:"12px"}} color="text.secondary">{user?.contact}</Typography>
+        </Box>
+        <Typography variant="body1" sx={{ flex: 1 }} color="initial">{user?.age}</Typography>
+        <Typography variant="body1" sx={{ flex: 2 }} color="initial">{user?.contact}</Typography>
+        <Box sx={{ flex: 1 }}>
+          {user?.status == "active" ? (<TaskAltIcon color='success'/>) : (<BlockFlippedIcon color='error'/>)}
+        </Box>
+      </Box>
+      )
+      : (<Box sx={{display:"flex",justifyContent:"space-between",pt:2,pb:2}}>
+        <Typography variant="body1" sx={{ flex: 1 }} color="initial">Patient Id</Typography>
+        <Typography variant="body1" sx={{ flex: 2 }} color="initial">Name</Typography>
+        <Typography variant="body1" sx={{ flex: 1 }} color="initial">Age</Typography>
+        <Typography variant="body1" sx={{ flex: 2 }} color="initial">Contact</Typography>
+        <Typography variant="body1" sx={{ flex: 1 }} color="initial">Status</Typography>
+        </Box>)}
+  </Box>
+  );
+};
+
+
+
 
 const Patients = () => {
   
   const patRef = useRef()
 
   const context = useContext(AuthContext)
-  const {fetchUsers , allUsers} = context
+  const {fetchUsers , allUsers, loading} = context
 
 
   const [clickedUser,setClickedUser] = useState({})
   
   const checkUserPatient = (user) =>{
-    
     return user.role === "patient"
   }
   const allPatients = allUsers.filter((user)=>(checkUserPatient(user)))
 
   useEffect(()=>{
-    fetchUsers()
+      fetchUsers()
     // eslint-disable-next-line
   },[])
 
@@ -40,42 +85,22 @@ const Patients = () => {
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <Toolbar />
           <Outlet />
-
-          <Box>
-            <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell >Patients Id</TableCell>
-                    <TableCell >Name</TableCell>
-                    <TableCell >Age</TableCell>
-                    <TableCell >Contact</TableCell>
-                    <TableCell >Status</TableCell>
-                  </TableRow>
-              </TableHead>
-              <TableBody>
-                {allPatients.map((user)=>{
-                  return (
-                    <TableRow
-                    onClick={()=>{patRef.current.click();setClickedUser(user)}}
-                    key={user._id}
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                    >
-                    <TableCell component="th" scope="row">0001</TableCell>
-                    <TableCell >{user.name}</TableCell>
-                      <TableCell >{user.age}</TableCell>
-                      <TableCell >{user.contact}</TableCell>
-                      <TableCell >{user.status}</TableCell>
-                    </TableRow>
-                    
-                    )
-                  })}
+          <Card sx={{ borderRadius: 3, boxShadow: 3  }}>
+            <CardContent >
+                <InfoRow type="heading"/>
+                {loading ? (
+                  <Box sx={{width:"100%",display:"flex",justifyContent:"flex-end",alignItems:"center"}}>
+                    <Oval  height="14vh" width="14vw" color="#1976d2" visible={true} ariaLabel="oval-loading" secondaryColor="#1976d2" strokeWidth={2} strokeWidthSecondary={2} />
+                  </Box>
+                ) : allPatients.map((user)=>{
                   
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Box>
-          <Modal refs={patRef} clickedUser={clickedUser}/>
+                  return (
+                    <InfoRow user={user} key={user._id} setUser={setClickedUser} type="data" ref={patRef}/>                    
+                    )
+                  })}              
+          </CardContent>
+          </Card>
+          <Modal refs={patRef} clickedUser={clickedUser} type="Patient" />
         </Box>
       </Box>
     </>

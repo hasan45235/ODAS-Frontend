@@ -6,6 +6,8 @@ const AppointmentsState = ({children}) => {
   const [appointments, setAppointments] = useState([]);
   const [specificAppointments,setSpecificAppointments] = useState([])
 
+  const [loading, setLoading] = useState(true)
+
   const API = "https://odas-backend.vercel.app/appointments"
   const API_PAT = "https://odas-backend.vercel.app/appointments/PatAppointments"
   const API_DOC = "https://odas-backend.vercel.app/appointments/DocAppointments"
@@ -34,7 +36,10 @@ const AppointmentsState = ({children}) => {
         },
     });
     const json = await response.json();
-    console.log(json);
+    if (response.ok){
+      setLoading(false)
+      console.log(json);
+    }
     setAppointments(json);
   }
 
@@ -81,7 +86,7 @@ const AppointmentsState = ({children}) => {
 
   
   return (
-    <AppointmentsContext.Provider value={{addAppointment, fetchAllApointments , appointments , fetchPatAppointments , specificAppointments , fetchDocAppointments , updateAppointment}}>
+    <AppointmentsContext.Provider value={{addAppointment, fetchAllApointments , appointments , fetchPatAppointments , specificAppointments , fetchDocAppointments , updateAppointment, loading}}>
         {children}
     </AppointmentsContext.Provider>
   )

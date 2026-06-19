@@ -1,38 +1,81 @@
-import { Box, Button, Toolbar } from '@mui/material'
-import React, {useContext, useEffect, useRef} from 'react'
+import { Box,  Toolbar, Typography, CardContent, Card } from '@mui/material'
+import React, {useContext, useEffect, useRef, useState} from 'react'
 import { Outlet } from 'react-router-dom'
 import DashboardSidebar from '../SideBar'
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
 import Modal from '../Modal';
-import AddIcon from '@mui/icons-material/Add';
 import AuthContext from '../../authContext';
-import AddDoctorModal from '../AddDoctorModal';
+// import AddDoctorModal from '../AddDoctorModal';
+import {Oval} from 'react-loader-spinner'
+import TaskAltIcon from '@mui/icons-material/TaskAlt';
+import BlockFlippedIcon from '@mui/icons-material/BlockFlipped';
+
+
+
+
+const InfoRow = ({ user , type, ref, settingClickedUser }) => {
+
+  function capitalizeFirstLetter(string) {
+    if (!string) return ""; 
+    return string.charAt(0).toUpperCase() + string.slice(1);
+    
+  }
+  
+
+  
+  // const context = useContext(AppointmentsContext)
+  // const {updateAppointment} = context
+
+  // const handleUpdate = (status , id) => {
+  //   updateAppointment(status , id)
+  // }
+
+  return (<>
+      {type === "data" ? 
+      (
+      <Box onClick={()=> {ref.current.click(),settingClickedUser(user)}} sx={{ display: "flex", justifyContent:"space-between", alignItems:"center", p:1.5, borderRadius: 2, bgcolor: "background.paper", boxShadow: "0 4px 12px rgba(0,0,0,0.06)", '&:hover':{boxShadow:"0px 0px 5px grey",transition:"0.5s",transform:'translateY(-1px)',cursor:"pointer"}}}>
+        <Typography variant="body1" sx={{ flex: 1 }} color="initial">#0001</Typography>
+        <Box sx={{ flex: 1 }}>
+          <Typography variant="body1" color="initial">Dr. {capitalizeFirstLetter(user?.name)}</Typography>
+          <Typography variant="body1" sx={{fontSize:"12px"}} color="text.secondary">{user?.contact}</Typography>
+        </Box>
+        <Typography variant="body1" sx={{ flex: 1 }} color="initial">{user?.speciality}</Typography>
+        <Typography variant="body1" sx={{ flex: 1 }} color="initial">{user?.age}</Typography>
+        <Typography variant="body1" sx={{ flex: 1 }} color="initial">{user?.gender}</Typography>
+        <Box sx={{ flex: 1,pl:2 }}>
+          {user?.status == "active" ? (<TaskAltIcon color='success'/>) : (<BlockFlippedIcon color='error'/>)}
+        </Box>
+      </Box>
+      )
+      : (<Box sx={{display:"flex",justifyContent:"space-between",pt:2,pb:2}}>
+        <Typography variant="body1" sx={{ flex: 1 }} color="initial">Doctor Id</Typography>
+        <Typography variant="body1" sx={{ flex: 1 }} color="initial">Name</Typography>
+        <Typography variant="body1" sx={{ flex: 1 }} color="initial">Speciality</Typography>
+        <Typography variant="body1" sx={{ flex: 1 }} color="initial">Age</Typography>
+        <Typography variant="body1" sx={{ flex: 1 }} color="initial">Gender</Typography>
+        <Typography variant="body1" sx={{ flex: 1 }} color="initial">Status</Typography>
+        </Box>)}
+  </>
+  );
+};
+
+
+
 
 const Doctors = () => {
 
   const context = useContext(AuthContext)
   // eslint-disable-next-line
-  const { addDoctor , fetchUsers , allUsers} = context
+  const { addDoctor , fetchUsers , allUsers, loading} = context
 
   const docRef = useRef()
-  const addDocRef = useRef()
-  
 
-  const checkUserDoctor = (user) =>{
-    
-    return user.role === "doctor"
-  }
+  const checkUserDoctor = (user) => {return user.role === "doctor"}
+
   const allDoctors = allUsers.filter((user)=>(checkUserDoctor(user)))
 
-  const doctorcheck = () => {
-    console.log(allDoctors)
-  }
+  const [clickedUser,setClickedUser] = useState({})
+
+  
 
   useEffect(()=>{
     fetchUsers();
@@ -46,46 +89,23 @@ const Doctors = () => {
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <Toolbar />
           <Outlet />
-          <AddDoctorModal docRef={addDocRef} />
-          <Button variant="contained" onClick={()=>{addDocRef.current.click()}} endIcon={<AddIcon />}>Add a Doctor</Button>
+          {/* <AddDoctorModal docRef={addDocRef} /> */}
           <Box>
-            <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell >Doctor Id</TableCell>
-                    <TableCell >Name</TableCell>
-                    <TableCell >Age</TableCell>
-                    <TableCell >Contact</TableCell>
-                    <TableCell >Status</TableCell>
-                  </TableRow>
-              </TableHead>
-              <TableBody>
-                {allDoctors.map((user)=>{
+            <Card>
+              <CardContent>
+                <InfoRow type="heading" />
+                {loading ? (
+                  <Box sx={{width:"100%",display:"flex",justifyContent:"center"}}>
+                    <Oval  height="14vh" width="14vw" color="#1976d2" visible={true} ariaLabel="oval-loading" secondaryColor="#1976d2" strokeWidth={2} strokeWidthSecondary={2} />
+                  </Box>
+                ) : allDoctors.map((user)=>{
                   return (
-                    
-                    <TableRow
-
-                    onClick={()=>{docRef.current.click()}}
-                    key={user._id}
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                    >
-                    <TableCell component="th" scope="row">0001</TableCell>
-                    <TableCell >{user.name}</TableCell>
-                      <TableCell >{user.age}</TableCell>
-                      <TableCell >{user.contact}</TableCell>
-                      <TableCell >{user.status}</TableCell>
-                    </TableRow>
-                    
-                  )
-                })}
-                  
-                </TableBody>
-              </Table>
-            </TableContainer>
+                    <InfoRow key={user._id} ref={docRef} settingClickedUser={setClickedUser}  user={user} type="data" /> 
+                  )})}
+              </CardContent>
+            </Card>
           </Box>
-          <Button onClick={()=>{doctorcheck()}}>click me</Button>     
-          <Modal refs={docRef}/>
+          <Modal refs={docRef} type="Doctor" clickedUser={clickedUser}/>
         </Box>
       </Box>
     </>

@@ -39,16 +39,10 @@ const PatProfile = () => {
   const context = useContext(AuthContext)
   const { currentUser , fetchCurrentUser , updateUser} = context
 
-  const [error, setError] = useState({state:false,text:""})
   const [open, setOpen] = useState(false);
-  const handleOpen = () =>{
-    setOpen(true);
-    setError({state:false,text:""})
-    
-
-  } 
-  
+  const handleOpen = () => setOpen(true); 
   const handleClose = () => setOpen(false);
+
 
   const genderArr = ['Male', 'Female', 'Other'];
   const [ updatedDataArr, setUpdatedDataArr] = useState({name:currentUser?.name || "", email:currentUser?.email || "", age:currentUser?.age || "", contact:currentUser?.contact || "", gender:currentUser?.gender || "", address:currentUser?.address || ""});
@@ -90,7 +84,7 @@ const PatProfile = () => {
           <Typography variant="h5" sx={{fontWeight:"bold",pt:2,pb:4,ml:-1}} color="primary">Edit your Profile</Typography>  
           <Box sx={{display:"flex", justifyContent:"space-between", alignItems:"center", mb:3}}>
             <TextField id="outlined-basic name" value={updatedDataArr.name || ""} label="Name"  name='name' variant="outlined" onChange={(e)=> onChangeHandler(e)} required/>
-            <TextField id="outlined-basic email" disabled={true} value={updatedDataArr?.email || ""} label="Email"  error={error.state && error.text === "Sorry a user with this email already exists" ? Boolean(error.state) : ""} helperText={error.state && error.text === "Sorry a user with this email already exists" ? error.text : ""} type='email' name='email' variant="outlined"  required/>
+            <TextField id="outlined-basic email" disabled={true} value={updatedDataArr?.email || ""} label="Email"   type='email' name='email' variant="outlined"  required/>
             <TextField id="outlined-basic age" value={updatedDataArr.age || ""} label="Age" type='number' name='age' onChange={(e)=> onChangeHandler(e)}  variant="outlined" required/>
           </Box>
           <Box sx={{display:"flex", justifyContent:"space-between", alignItems:"center", mb:3}}>
@@ -108,7 +102,7 @@ const PatProfile = () => {
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <Toolbar />
           <Outlet />
-          {!currentUser ? (
+          {currentUser?.length === 0 || !currentUser ? (
             <Box sx={{width:"100%",display:"flex",justifyContent:"center",alignItems:"center",height:"80vh"}}>
               <Oval  height="14vh" width="14vw" color="#1976d2" visible={true} ariaLabel="oval-loading" secondaryColor="#1976d2" strokeWidth={2} strokeWidthSecondary={2} />
             </Box>

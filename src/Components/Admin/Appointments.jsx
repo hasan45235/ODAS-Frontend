@@ -1,62 +1,39 @@
 // eslint-disable-next-line
-import React, {  useContext, useEffect, useRef } from 'react'
+import React , {useState , useEffect, useRef, useContext} from 'react'
 import SideBar from '../SideBar'
-import { Box, Button, Toolbar } from '@mui/material'
+import { Autocomplete, Box, Card, CardContent, Chip,  Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Toolbar, Typography } from '@mui/material'
 import { Outlet } from 'react-router-dom'
-import AddAvaibility from '../Doctor/AddSchedule'
-import ScheduleContext from '../../scheduleContext'
 import AuthContext from '../../authContext'
+import AppointmentsContext from '../../AppointmentsContext'
+import DoctorAppointmentCard from '../Doctor/DocAppointmentCard'
+import { Oval } from 'react-loader-spinner'
+
 
 const Appointments = () => {
   
-    const context = useContext(ScheduleContext);
-    const {specificSchedule, fetchSpecificSchedule} = context;
+
+  const context = useContext(AppointmentsContext)
+  const {fetchAllApointments,appointments, loading } = context
+
+  const context2 = useContext(AuthContext)
+  const {fetchUsers , allUsers } = context2
+
+  const [selectedAppointment,setSelectedAppointment] = useState({})
+  const showRef = useRef(null)
+  const status = ["All","pending","approved","rejected","completed"]
 
 
-  const generateSlots = (startTime, endTime, slotDuration) => {
-  const slots = [];
+  const [filterStatus, setFilterStatus] = useState("")
 
-   const duration = Number(slotDuration);
-
-  let startMinutes =
-    Number(startTime.split(":")[0]) * 60 +
-    Number(startTime.split(":")[1]);
-
-  const endMinutes =
-    Number(endTime.split(":")[0]) * 60 +
-    Number(endTime.split(":")[1]);
-  while(startMinutes + duration <= endMinutes){
-    
-    const formatTime = (minutes) => {
-      let hrs = Math.floor(minutes / 60);
-      const mins = minutes % 60;
-      const period = hrs >= 12 ? "PM" : "AM";
-
-      hrs = hrs % 12 || 12; // convert 0 -> 12
-      return `${hrs}:${mins.toString().padStart(2, "0")} ${period}`;
-    };
-
-    const slotStart = formatTime(startMinutes);
-    const slotEnd = formatTime(startMinutes + duration);
-
-    slots.push(`${slotStart} - ${slotEnd}`);
-    startMinutes += duration;
-  }
-  return slots.join(", ");
-};
+  const filteredAppointments = appointments.filter((item)=>item.status === filterStatus)
 
 
-    const context2 = useContext(AuthContext)
-    const {fetchCurrentUser , currentUser} = context2;
-    
+  useEffect(()=>{
+    fetchAllApointments()
+    fetchUsers()
+    //eslint-disable-next-line
+  },[appointments])
 
-    const addRef = useRef();
-
-    useEffect(() => {
-        fetchSpecificSchedule()
-        fetchCurrentUser();
-      // eslint-disable-next-line  
-    }, [])
   
     return (
     <>
@@ -65,22 +42,60 @@ const Appointments = () => {
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <Toolbar />
           <Outlet />
-          <AddAvaibility ref={addRef} />
           <Box>
-            <Button onClick={()=>{addRef.current.click()}} variant="contained" sx={{mt:3}}>Add Schedule</Button>
-          </Box>
-          <Box>
-            {specificSchedule && specificSchedule.map((item, index) => (
-              <Box key={index} sx={{border:"1px solid #000", p:2, mb:2, borderRadius:2}}>
-                <h3>Name: {currentUser?.name}</h3>
-                <p>Center: {item?.hospitalName}</p>
-                <p>Available Slots: {generateSlots(item?.startTime,item?.endTime,item?.slotDuration)}</p>
-                <p>Fees: {item?.fees}</p>
-                <p>Days: {item?.days.join(", ")}</p>
-                <p>Slot Duration: {item?.slotDuration} minutes</p>
-              </Box>
-            ))}
-          </Box>
+            <Card sx={{ borderRadius: 3, boxShadow: 3  }}>
+              <CardContent >
+                <Box sx={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                  <Typography variant="h5" sx={{fontWeight:"bold",mt:4,mb:2}} color="initial">Your Appointments</Typography>
+                  <Autocomplete disablePortal   onChange={(event,newValue)=>{setFilterStatus(newValue)}} options={status} sx={{ width: "20%" }} renderInput={(params) => <TextField {...params} label="Filter" />}/>
+                </Box>
+                <TableContainer>
+                  <Table>
+                    <TableHead>
+                      <TableRow sx={{ backgroundColor: "grey.100", "& th": { fontWeight: 600, fontSize: 13, textTransform: "uppercase", color: "text.secondary" }}}>
+                        <TableCell>Receipt</TableCell>
+                        <TableCell>Patient</TableCell>
+                        <TableCell>Date</TableCell>
+                        <TableCell>Time Slot</TableCell>
+                        <TableCell>Status</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                    {loading ? (
+                      <Box sx={{width:"100%",display:"flex",justifyContent:"flex-end",alignItems:"center"}}>
+                        <Oval  height="14vh" width="14vw" color="#1976d2" visible={true} ariaLabel="oval-loading" secondaryColor="#1976d2" strokeWidth={2} strokeWidthSecondary={2} />
+                      </Box>
+                    )
+                     : appointments.length === 0 ? (
+                      <Typography sx={{ p:4 }}>No appointments found.</Typography>
+                    ) 
+                    : (
+                    ((filterStatus === "All" || filterStatus === "")  ? appointments : filteredAppointments).map((item, index) => {
+                      const patient = allUsers.find((user) => user._id === item.patientId);
+                      return (
+                        
+                        <TableRow key={index} hover sx={{ cursor: "pointer",transition:"0.3s", "&:last-child td": { borderBottom: 0 } }} onClick={() => { showRef.current.click(); setSelectedAppointment({ appointment: item, patient }) }} >
+                          <TableCell><Typography fontWeight={600}>#{item.receiptNum}</Typography></TableCell>
+                          <TableCell>
+                            <Typography fontWeight={500}>{patient?.name}</Typography>
+                            <Typography variant="caption" color="text.secondary">{patient?.contact}</Typography>
+                          </TableCell>
+                          <TableCell><Typography>{item.bookedDate}</Typography></TableCell>
+                          <TableCell><Typography>{item.bookedSlot}</Typography></TableCell>
+                          <TableCell>
+                            <Chip size="small" label={item.status.toUpperCase()} color={ item.status === "pending" ? "warning" : item.status === "approved" ? "success" : item.status === "rejected" ? "error" : "primary"} sx={{ fontWeight: 600 }}/>
+                          </TableCell>
+                        </TableRow>
+                        
+                      );
+                    }))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </CardContent>
+            </Card>
+            <DoctorAppointmentCard ref={showRef} appointment={selectedAppointment.appointment} patient={selectedAppointment.patient}/>
+          </Box>        
         </Box>
       </Box>  
     </>

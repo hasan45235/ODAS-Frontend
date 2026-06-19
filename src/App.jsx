@@ -8,7 +8,6 @@ import ProtectedRoute from "./protectedRoute";
 // Admin Imports
 import Appointments from "./Components/Admin/Appointments";
 import Patients from "./Components/Admin/Patients";
-import Profile from "./Components/Admin/Profile";
 import Controls from "./Components/Admin/Controls";
 import Doctors from "./Components/Admin/Doctors";
 import Dashboard from "./Components/Admin/Dashboard";
@@ -60,11 +59,6 @@ function App() {
       <Route path="/admin/appointments" element={
         <ProtectedRoute allowedRoles={['admin']}>
           <Appointments />
-        </ProtectedRoute>
-      } />
-      <Route path="/admin/profile" element={
-        <ProtectedRoute allowedRoles={['admin']}>
-          <Profile />
         </ProtectedRoute>
       } />
       <Route path="/admin/settings" element={

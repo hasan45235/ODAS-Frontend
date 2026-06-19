@@ -1,5 +1,5 @@
-import {  Box, Card, CardContent,  Divider, IconButton, Stack, Toolbar, Typography } from '@mui/material'
-import React, { useContext, useEffect } from 'react'
+import {  Box, Card, CardContent,  Divider, IconButton, Stack, Button, Toolbar, Typography } from '@mui/material'
+import React, { useContext, useEffect, useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import DashboardSidebar from "../SideBar"
 import DashCard from "../Card"
@@ -15,13 +15,14 @@ import { Oval } from 'react-loader-spinner'
 
 
 
-const InfoRow = ({ appointment , patient , type }) => {
+const InfoRow = ({ appointment , patient , type  }) => {
 
   function capitalizeFirstLetter(string) {
     if (!string) return ""; 
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
   
+
   
   const context = useContext(AppointmentsContext)
   const {updateAppointment} = context
@@ -59,14 +60,19 @@ const DocDashboard = () => {
   const context2 = useContext(AuthContext)
   const {fetchUsers , allUsers} = context2
 
+  const [loading, setLoading] = useState(true);
+
   const pendingApp = specificAppointments.filter((item)=> item.status === "pending")
 
   const todayDate = new Date().toLocaleDateString("en-GB");
   const todayApp = specificAppointments.filter((item)=> item.bookedDate === todayDate)
 
+  const completedApp = specificAppointments.filter((item)=> item.status === "completed")
+
   useEffect(()=>{
     fetchDocAppointments()
     fetchUsers()
+    setLoading(false);
     // eslint-disable-next-line
   },[])
 
@@ -80,20 +86,23 @@ const DocDashboard = () => {
             <Outlet />
             <Box >
               <Box sx={{display:"flex",justifyContent:"space-between"}}>
-                <DashCard title="Today's Appointments" desc="data" icon={<ListAltIcon sx={{fontSize:"50px",color:"#527dc7",padding:"0px 15px",margin:"auto 0px"}}/>} />
-                <DashCard title="Pending Requests" desc="data" icon={<PendingActionsIcon sx={{fontSize:"50px",color:"#527dc7",padding:"0px 15px",margin:"auto 0px"}}/>} />
-                <DashCard title="Completed Appointments" desc="data" icon={<OfflinePinIcon sx={{fontSize:"50px",color:"#527dc7",padding:"0px 15px",margin:"auto 0px"}}/>} />
-                <DashCard title="Patients Consulted" desc="data" icon={<PersonalInjuryIcon sx={{fontSize:"50px",color:"#527dc7",padding:"0px 15px",margin:"auto 0px"}}/>} />
+                <DashCard title="Today's Appointments" desc={todayApp.length} icon={<ListAltIcon sx={{fontSize:"50px",color:"#527dc7",padding:"0px 15px",margin:"auto 0px"}}/>} />
+                <DashCard title="Pending Requests" desc={pendingApp.length} icon={<PendingActionsIcon sx={{fontSize:"50px",color:"#527dc7",padding:"0px 15px",margin:"auto 0px"}}/>} />
+                <DashCard title="Completed Appointments" desc={completedApp.length} icon={<OfflinePinIcon sx={{fontSize:"50px",color:"#527dc7",padding:"0px 15px",margin:"auto 0px"}}/>} />
+                <DashCard title="Patients Consulted" desc={completedApp.length} icon={<PersonalInjuryIcon sx={{fontSize:"50px",color:"#527dc7",padding:"0px 15px",margin:"auto 0px"}}/>} />
               </Box>
               <Card sx={{p:2,width:"95%",margin:"20px auto",borderRadius:3,boxShadow:3,bgcolor: "background.paper",}}>
                 <CardContent>
                   <Typography variant="h5" sx={{fontWeight:"bold"}} color="initial">Pending Requests</Typography>
                   <Divider sx={{mb:3,mt:3}}/>
                   <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}>
-                    {pendingApp == 0 || pendingApp == null ? (
+                    {loading ? (
                       <Box sx={{width:"100%",display:"flex",justifyContent:"center"}}>
                         <Oval  height="14vh" width="14vw" color="#1976d2" visible={true} ariaLabel="oval-loading" secondaryColor="#1976d2" strokeWidth={2} strokeWidthSecondary={2} />
+                        <Button onClick={() => console.log(pendingApp)}>click me</Button>
                       </Box>
+                    ) : pendingApp.length === 0 ? (
+                      <Typography sx={{ textAlign: "center" }}>No pending requests.</Typography>
                     ) : (
                       pendingApp.map((appointment)=>{
                         const patient = allUsers.filter((item)=> item._id === appointment.patientId)
