@@ -128,22 +128,6 @@ const AuthState = (props) => {
       setAuthToken({ token: null, role: null, isLoading: false });
       navigate('/login');
     }
-
-    const addDoctor = async (data) =>{
-        try {
-            const response = await fetch(API_Create, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            });
-            const json = await response.json();
-            console.log("Doctor Added Successfully :",json);
-        } catch (error) {
-            console.log("error",error)
-        }
-    }
     
     const updateUser = async (data) =>{
         try {
@@ -228,7 +212,7 @@ const AuthState = (props) => {
   }
 
   return (
-    <AuthContext.Provider value={{ createUser , loginUser , authToken , addDoctor , fetchUsers , allUsers , logout , currentUser , fetchCurrentUser , updateUser, loading, adminUpdateUser}}>
+    <AuthContext.Provider value={{ createUser , loginUser , authToken , fetchUsers , allUsers , logout , currentUser , fetchCurrentUser , updateUser, loading, adminUpdateUser}}>
         {props.children}
     </AuthContext.Provider>
   );

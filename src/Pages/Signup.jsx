@@ -1,19 +1,17 @@
-import { Box, Button, Card, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, FormHelperText } from '@mui/material'
-import React , { useContext, useEffect, useState } from 'react'
+import { Box, Button, Card, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, FormHelperText, Typography } from '@mui/material'
+import React , { useContext, useEffect, useRef, useState } from 'react'
 import TextField from '@mui/material/TextField';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import Autocomplete from '@mui/material/Autocomplete';
-import Typography from '@mui/material/Typography';
 import backimage from '../sign.png';
 import Footer from '../Components/Footer';
 import AuthContext from '../authContext';
+import AddDoctorModal from '../Components/AddDoctorModal';
 
 const Signup = () => {
 
   const context = useContext(AuthContext);
   const {createUser ,  fetchUsers} = context;
-
-  // const totalUsers = (allUsers.length + 1)
 
   const [ dataArr, setDataArr] = useState({name:"", email:"", password:"", age:"", contact:"", gender:"", address:"",role:"patient"});
   
@@ -26,6 +24,8 @@ const Signup = () => {
     setDataArr({ ...dataArr, [name]: value });
     
   }
+
+  const docRef = useRef(null)
 
   const addUser = async() => {
     try {
@@ -81,14 +81,18 @@ const Signup = () => {
           </Box>
           <Box sx={{display:"flex", justifyContent:"space-between", alignItems:"center", mb:3}}>
             <TextField id="outlined-basic age" label="Age" type='number' name='age' onChange={(e)=>{onChangeHandler(e)}} variant="outlined" required/>
-            <TextField id="outlined-basic contact"inputProps={{maxLength: 11,}} label="Contact" name='contact'  variant="outlined" onChange={(e)=>{onChangeHandler(e)}} required/>
+            <TextField id="outlined-basic contact" inputProps={{maxLength: 11,}} label="Contact" name='contact'  variant="outlined" onChange={(e)=>{onChangeHandler(e)}} required/>
             <Autocomplete disablePortal options={genderArr} onChange={(event, newValue) => {setDataArr((prev) => ({...prev,gender: newValue ? newValue : "" }));}} sx={{ width: "30ch" }} renderInput={(params) => <TextField {...params} label="Gender" name='gender' />}/>
           </Box>
           <TextField id="outlined-basic address" label="Address" name='address' variant="outlined" fullWidth onChange={(e)=>{onChangeHandler(e)}} required  /><br /><br />
-          <Button variant="contained" color="primary" type="submit">Sign-up</Button>
+          <Box sx={{display:"flex",justifyContent:"space-between"}}>
+            <Button variant="contained" color="primary" type="submit">Sign-up</Button>
+            <Typography variant="body1" onClick={()=>{docRef.current.click()}} color="primary"  sx={{textDecoration:"underline","&:hover":{cursor:"pointer",color:"#0e3fb0"}}}>Sign-up as doctor?</Typography>
+          </Box>
           </Box>
         </Card>
         <Footer />
+        <AddDoctorModal docRef={docRef} />
       </Box>
     </>
   )
