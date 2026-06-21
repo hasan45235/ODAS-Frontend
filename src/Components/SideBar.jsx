@@ -29,20 +29,20 @@ const DashboardSidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  
+
 
   const context = useContext(AuthContext)
-  const {logout , authToken} = context
+  const { logout, authToken } = context
 
   const navItems = {
-    admin:[
+    admin: [
       { text: "Dashboard", icon: <DashboardIcon />, path: "/admin/dashboard" },
       { text: "Doctors", icon: <i className="fa-solid fa-user-doctor fa-lg" ></i>, path: "/admin/doctors" },
       { text: "Patients", icon: <PersonIcon />, path: "/admin/patients" },
       { text: "Appointments", icon: <AppRegistrationIcon />, path: "/admin/appointments" },
       { text: "Controls", icon: <SettingsIcon />, path: "/admin/settings" },
     ],
-    doctor:[
+    doctor: [
       { text: "Dashboard", icon: <DashboardIcon />, path: "/doctor/dashboard" },
       { text: "Profile", icon: <PersonIcon />, path: "/doctor/profile" },
       { text: "Schedule", icon: <ListAltIcon />, path: "/doctor/schedule" },
@@ -50,16 +50,23 @@ const DashboardSidebar = () => {
       { text: "Patients", icon: <PersonalInjuryIcon />, path: "/doctor/patient" },
       { text: "Settings", icon: <SettingsIcon />, path: "/doctor/settings" },
     ],
-    patient:[
+    patient: [
       { text: "Dashboard", icon: <DashboardIcon />, path: "/patient/dashboard" },
       { text: "Profile", icon: <PersonIcon />, path: "/patient/profile" },
       { text: "Appointments", icon: <AppRegistrationIcon />, path: "/patient/appointment" },
       { text: "Doctors", icon: <i className="fa-solid fa-user-doctor fa-lg" ></i>, path: "/patient/doctors" },
       { text: "Settings", icon: <SettingsIcon />, path: "/patient/settings" },
     ]
-  } 
+  }
 
-  const navIcons = navItems[authToken.role]
+  const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null;
+  const role = authToken.role || (user ? user.role : null);
+  const navIcons = (role && navItems[role]) ? navItems[role] : [];
+
+  const isInactive = user && user.status === "inactive";
+  const filteredNavIcons = isInactive
+    ? navIcons.filter(item => ["Dashboard", "Profile", "Settings", "Controls"].includes(item.text))
+    : navIcons;
 
   return (
     <Drawer variant="permanent" sx={{ width: open ? expandedWidth : collapsedWidth, flexShrink: 0, "& .MuiDrawer-paper": { width: open ? expandedWidth : collapsedWidth, transition: "width 0.3s ease", overflowX: "hidden", backgroundColor: "#0f172a", color: "#fff", }, }}>
@@ -71,7 +78,7 @@ const DashboardSidebar = () => {
       </Toolbar>
 
       <List>
-        {navIcons.map((item) => (
+        {filteredNavIcons.map((item) => (
           <Tooltip key={item.text} title={!open ? item.text : ""} placement="right">
             <ListItemButton selected={location.pathname === item.path} onClick={() => navigate(item.path)} sx={{ justifyContent: open ? "initial" : "center", "&.Mui-selected": { backgroundColor: "#1e293b", }, "&:hover": { backgroundColor: "#1e293b", }, }}>
               <ListItemIcon sx={{ color: "#fff", minWidth: 0, mr: open ? 2 : "auto", justifyContent: "center", }}>
