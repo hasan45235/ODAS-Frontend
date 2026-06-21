@@ -1,12 +1,49 @@
 // eslint-disable-next-line
 import React , {useState , useEffect, useRef, useContext} from 'react'
 import SideBar from '../SideBar'
-import { Autocomplete, Box, Card, CardContent, Chip,  Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Toolbar, Typography } from '@mui/material'
+import { Autocomplete, Box, Card, CardContent, Chip, TextField, Toolbar, Typography } from '@mui/material'
 import { Outlet } from 'react-router-dom'
 import AuthContext from '../../authContext'
 import AppointmentsContext from '../../AppointmentsContext'
 import DoctorAppointmentCard from '../Doctor/DocAppointmentCard'
-import { Oval } from 'react-loader-spinner'
+import LoadingSpinner from '../../LoadingSpinner'
+
+
+const InfoRow = ({ user , type, ref, appointment, settingClickedUser }) => {
+
+  function capitalizeFirstLetter(string) {
+    if (!string) return ""; 
+    return string.charAt(0).toUpperCase() + string.slice(1);
+    
+  }
+  
+  return (<>
+      {type === "data" ? 
+      (
+      <Box onClick={()=> {ref.current.click(),settingClickedUser(appointment)}} sx={{ display: "flex", alignItems:"center", pt:1.5,pb:1.5,pr:1, borderRadius: 2, bgcolor: "background.paper", boxShadow: "0 4px 12px rgba(0,0,0,0.06)", '&:hover':{boxShadow:"0px 0px 5px grey",transition:"0.5s",transform:'translateY(-1px)',cursor:"pointer"}}}>
+        <Typography variant="body1" sx={{ flex: 1,maxWidth:"20%"}} color="initial">{appointment.receiptNum}</Typography>
+        <span style={{ flex: 1 ,maxWidth:"20%"}}>
+          <Typography variant="body1" color="initial">{capitalizeFirstLetter(user?.name)}</Typography>
+          <Typography variant="body1" sx={{fontSize:"12px"}} color="text.secondary">{user?.contact}</Typography>
+        </span>
+        <Typography variant="body1" sx={{ flex: 1,maxWidth:"20%" }} color="initial">{appointment?.bookedDate}</Typography>
+        <Typography variant="body1" sx={{ flex: 2 ,maxWidth:"20%"}} color="initial">{appointment?.bookedSlot}</Typography>
+        <Box sx={{flex:1 , maxWidth:"20%"}}>
+          <Chip size="small" label={appointment.status.toUpperCase()} color={ appointment.status === "pending" ? "warning" : appointment.status === "approved" ? "success" : appointment.status === "rejected" ? "error" : "primary"} sx={{ fontWeight: 600 }}/>
+        </Box>  
+      </Box>
+      )
+      : (<Box sx={{display:"flex",pt:2,pb:2}}>
+        <Typography variant="body1" sx={{ flex: 1 , maxWidth:"20%"}} color="initial">Receipt</Typography>
+        <Typography variant="body1" sx={{ flex: 1 , maxWidth:"20%"}} color="initial">Patient</Typography>
+        <Typography variant="body1" sx={{ flex: 1 , maxWidth:"20%"}} color="initial">Date</Typography>
+        <Typography variant="body1" sx={{ flex: 2 , maxWidth:"20%"}} color="initial">Time Slot</Typography>
+        <Typography variant="body1" sx={{ flex: 1 , maxWidth:"20%"}} color="initial">Status</Typography>
+        </Box>)}
+  </>
+  );
+};
+
 
 
 const Appointments = () => {
@@ -49,22 +86,9 @@ const Appointments = () => {
                   <Typography variant="h5" sx={{fontWeight:"bold",mt:4,mb:2}} color="initial">Your Appointments</Typography>
                   <Autocomplete disablePortal   onChange={(event,newValue)=>{setFilterStatus(newValue)}} options={status} sx={{ width: "20%" }} renderInput={(params) => <TextField {...params} label="Filter" />}/>
                 </Box>
-                <TableContainer>
-                  <Table>
-                    <TableHead>
-                      <TableRow sx={{ backgroundColor: "grey.100", "& th": { fontWeight: 600, fontSize: 13, textTransform: "uppercase", color: "text.secondary" }}}>
-                        <TableCell>Receipt</TableCell>
-                        <TableCell>Patient</TableCell>
-                        <TableCell>Date</TableCell>
-                        <TableCell>Time Slot</TableCell>
-                        <TableCell>Status</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
+                    <InfoRow type="heading" />
                     {loading ? (
-                      <Box sx={{width:"100%",display:"flex",justifyContent:"flex-end",alignItems:"center"}}>
-                        <Oval  height="14vh" width="14vw" color="#1976d2" visible={true} ariaLabel="oval-loading" secondaryColor="#1976d2" strokeWidth={2} strokeWidthSecondary={2} />
-                      </Box>
+                      <LoadingSpinner />
                     )
                      : appointments.length === 0 ? (
                       <Typography sx={{ p:4 }}>No appointments found.</Typography>
@@ -73,25 +97,9 @@ const Appointments = () => {
                     ((filterStatus === "All" || filterStatus === "")  ? appointments : filteredAppointments).map((item, index) => {
                       const patient = allUsers.find((user) => user._id === item.patientId);
                       return (
-                        
-                        <TableRow key={index} hover sx={{ cursor: "pointer",transition:"0.3s", "&:last-child td": { borderBottom: 0 } }} onClick={() => { showRef.current.click(); setSelectedAppointment({ appointment: item, patient }) }} >
-                          <TableCell><Typography fontWeight={600}>#{item.receiptNum}</Typography></TableCell>
-                          <TableCell>
-                            <Typography fontWeight={500}>{patient?.name}</Typography>
-                            <Typography variant="caption" color="text.secondary">{patient?.contact}</Typography>
-                          </TableCell>
-                          <TableCell><Typography>{item.bookedDate}</Typography></TableCell>
-                          <TableCell><Typography>{item.bookedSlot}</Typography></TableCell>
-                          <TableCell>
-                            <Chip size="small" label={item.status.toUpperCase()} color={ item.status === "pending" ? "warning" : item.status === "approved" ? "success" : item.status === "rejected" ? "error" : "primary"} sx={{ fontWeight: 600 }}/>
-                          </TableCell>
-                        </TableRow>
-                        
+                        <InfoRow key={index}  type="data" settingClickedUser={setSelectedAppointment} user={patient} appointment={item} />
                       );
                     }))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
               </CardContent>
             </Card>
             <DoctorAppointmentCard ref={showRef} appointment={selectedAppointment.appointment} patient={selectedAppointment.patient}/>

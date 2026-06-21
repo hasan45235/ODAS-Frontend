@@ -5,7 +5,7 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { Card, CardContent } from '@mui/material';
+import { Card, CardContent, TextField} from '@mui/material';
 import BlockFlippedIcon from '@mui/icons-material/BlockFlipped';
 import PhoneIcon from '@mui/icons-material/Phone';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
@@ -25,6 +25,19 @@ const style = {
   p:2
 };
 
+
+const style2 = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 450,
+  bgcolor: "background.paper",
+  borderRadius: 2,
+  boxShadow: 24,
+  p: 4,
+};
+
 function CompModal(props) {
 
   const { refs , clickedUser , type} = props
@@ -32,14 +45,24 @@ function CompModal(props) {
   const context = useContext(AuthContext)
   const {adminUpdateUser} = context
 
+  
+  const [data ,setData] = useState({reason:""})
+
   const updatingUser = (user) => {
-    const stat = user.status === "active" ? "inactive" : "active"
-    adminUpdateUser({status:stat}, user._id )
+    if (!data.reason) return;
+
+    const newStatus = user.status === "active" ? "inactive" : "active"
+    const newData = {
+      reason:data.reason,
+      status: newStatus
+    }
+    adminUpdateUser(newData , user._id )
     handleClose()
+    handleClose2()
     Swal.fire({
       position: "center",
       icon: "success",
-      title: `${firstCapital(user.role)} ${firstCapital(user.name)} marked ${stat}`,
+      title: `${firstCapital(user.role)} ${firstCapital(user.name)} marked ${newStatus}`,
       showConfirmButton: false,
       timer: 2000
     });
@@ -55,6 +78,11 @@ function CompModal(props) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  
+  const [open2, setOpen2] = useState(false);
+  const handleOpen2 = () => setOpen2(true);
+  const handleClose2 = () => setOpen2(false);
 
   return (
     <div>
@@ -101,15 +129,45 @@ function CompModal(props) {
               </CardContent>
               <Box sx={{display:"flex", justifyContent:"flex-end", mb:2}}>
                 {clickedUser.status === "active" ? 
-                <Button startIcon={<BlockFlippedIcon />} onClick={()=>{updatingUser(clickedUser)}} sx={{m:2, color:"red","&:hover": { bgcolor: "#fcf5f5" }}}>Mark In-Active</Button>
+                <Button startIcon={<BlockFlippedIcon />} onClick={()=>{handleOpen2()}} sx={{m:2, color:"red","&:hover": { bgcolor: "#fcf5f5" }}}>Mark In-Active</Button>
                 :
-                <Button startIcon={<TaskAltIcon />} onClick={()=>{updatingUser(clickedUser)}} sx={{m:2, color:"Green","&:hover": { bgcolor: "#fcf5f5" }}}>Mark Active</Button>
+                <Button startIcon={<TaskAltIcon />} onClick={()=>{handleOpen2()}} sx={{m:2, color:"Green","&:hover": { bgcolor: "#fcf5f5" }}}>Mark Active</Button>
                 }                
               </Box>
             </Card>
           
         </Fade>
       </Modal>
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={open2}
+        onClose={handleClose2}
+        closeAfterTransition
+        slots={{ backdrop: Backdrop }}
+        slotProps={{
+          backdrop: {
+            timeout: 500,
+          },
+        }}>
+      <Box sx={style2}>
+        <Typography variant="h6" mb={2}>
+          Update Reason
+        </Typography>
+
+        <TextField fullWidth multiline rows={4} label="Reason" required onChange={(e) => setData({...data,reason:e.target.value})}/>
+
+        <Box mt={3} display="flex" justifyContent="flex-end" gap={2}>
+          <Button variant="outlined" onClick={handleClose2}>
+            Cancel
+          </Button>
+
+          <Button variant="contained" onClick={()=>{updatingUser(clickedUser)}} disabled={!data.reason}>
+            Update
+          </Button>
+        </Box>
+      </Box>
+    </Modal>
     </div>
   );
 }

@@ -38,7 +38,6 @@ const AppointmentsState = ({children}) => {
     const json = await response.json();
     if (response.ok){
       setLoading(false)
-      console.log(json);
     }
     setAppointments(json);
   }

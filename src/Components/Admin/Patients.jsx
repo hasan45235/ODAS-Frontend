@@ -4,9 +4,9 @@ import { Outlet } from 'react-router-dom'
 import DashboardSidebar from '../SideBar'
 import Modal from '../Modal';
 import AuthContext from '../../authContext';
-import { Oval } from 'react-loader-spinner'
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import BlockFlippedIcon from '@mui/icons-material/BlockFlipped';
+import LoadingSpinner from '../../LoadingSpinner'
 
 
 
@@ -89,9 +89,7 @@ const Patients = () => {
             <CardContent >
                 <InfoRow type="heading"/>
                 {loading ? (
-                  <Box sx={{width:"100%",display:"flex",justifyContent:"flex-end",alignItems:"center"}}>
-                    <Oval  height="14vh" width="14vw" color="#1976d2" visible={true} ariaLabel="oval-loading" secondaryColor="#1976d2" strokeWidth={2} strokeWidthSecondary={2} />
-                  </Box>
+                    <LoadingSpinner />
                 ) : allPatients.map((user)=>{
                   
                   return (

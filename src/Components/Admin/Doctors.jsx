@@ -5,10 +5,9 @@ import DashboardSidebar from '../SideBar'
 import Modal from '../Modal';
 import AuthContext from '../../authContext';
 // import AddDoctorModal from '../AddDoctorModal';
-import {Oval} from 'react-loader-spinner'
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import BlockFlippedIcon from '@mui/icons-material/BlockFlipped';
-
+import LoadingSpinner from '../../LoadingSpinner';
 
 
 
@@ -95,9 +94,7 @@ const Doctors = () => {
               <CardContent>
                 <InfoRow type="heading" />
                 {loading ? (
-                  <Box sx={{width:"100%",display:"flex",justifyContent:"center"}}>
-                    <Oval  height="14vh" width="14vw" color="#1976d2" visible={true} ariaLabel="oval-loading" secondaryColor="#1976d2" strokeWidth={2} strokeWidthSecondary={2} />
-                  </Box>
+                    <LoadingSpinner />
                 ) : allDoctors.map((user)=>{
                   return (
                     <InfoRow key={user._id} ref={docRef} settingClickedUser={setClickedUser}  user={user} type="data" /> 
