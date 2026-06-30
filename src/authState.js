@@ -201,10 +201,7 @@ const AuthState = (props) => {
     }
   }
 
-  const [currentUser, setCurrentUser] = useState(() => {
-    const savedUser = localStorage.getItem('user');
-    return savedUser ? JSON.parse(savedUser) : null;
-  });
+  const [currentUser, setCurrentUser] = useState({});
 
   const fetchCurrentUser = async () => {
     try {
