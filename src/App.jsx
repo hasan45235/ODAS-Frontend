@@ -1,9 +1,13 @@
 import React from "react";
 import Home from "./Pages/Home";
 import Navbar from "./Components/Navbar";
-import { Navigate, Route , Routes, useLocation} from "react-router-dom"
+import { Navigate, Route, Routes } from "react-router-dom"
 import Login from "./Pages/Login";
 import Signup from "./Pages/Signup";
+import Services from "./Pages/Services";
+import Doctor from "./Pages/Doctor";
+import About from "./Pages/About";
+import Contact from "./Pages/Contact";
 import ProtectedRoute from "./protectedRoute";
 // Admin Imports
 import Appointments from "./Components/Admin/Appointments";
@@ -28,117 +32,121 @@ import DocDashboard from "./Components/Doctor/DocDashboard"
 
 function App() {
 
-  const location = useLocation()
+  const authToken = JSON.parse(localStorage.getItem('authToken'))
 
   return (
     <>
-     {location.pathname === "/" || location.pathname === "/login" || location.pathname === "/signup" ? <Navbar /> : null}
-     
-     
-     
-     <Routes>
-      <Route  path="/" element={<Home />} />
-      <Route  path="/login" element={<Login />} />
-      <Route  path="/signup" element={<Signup />} />
-      
-      <Route path="/admin/dashboard" element={
-        <ProtectedRoute allowedRoles={['admin']}>
-          <Dashboard />
-        </ProtectedRoute>
-      } />
-      <Route path="/admin/patients" element={
-        <ProtectedRoute allowedRoles={['admin']}>
-          <Patients />
-        </ProtectedRoute>
-      } />
-      <Route path="/admin/doctors" element={
-        <ProtectedRoute allowedRoles={['admin']}>
-          <Doctors />
-        </ProtectedRoute>
-      } />
-      <Route path="/admin/appointments" element={
-        <ProtectedRoute allowedRoles={['admin']}>
-          <Appointments />
-        </ProtectedRoute>
-      } />
-      <Route path="/admin/settings" element={
-        <ProtectedRoute allowedRoles={['admin']}>
-          <Controls />
-        </ProtectedRoute>
-      } />
-      
-      {/* Doctor Routes */}    
+      {!authToken ? <Navbar /> : null}
 
-      <Route path="/doctor/patient" element={
-        <ProtectedRoute allowedRoles={['doctor']}>
-          <DocPatient />
-        </ProtectedRoute>
-      } />    
 
-      <Route path="/doctor/schedule" element={
-        <ProtectedRoute allowedRoles={['doctor']}>
-          <DocSchedule />
-        </ProtectedRoute>
-      } />    
 
-      <Route path="/doctor/dashboard" element={
-        <ProtectedRoute allowedRoles={['doctor']}>
-          <DocDashboard />
-        </ProtectedRoute>
-      } />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/services" element={<Services />} />
+        <Route path="/doctor" element={<Doctor />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
 
-      <Route path="/doctor/appointment" element={
-        <ProtectedRoute allowedRoles={['doctor']}>
-          <DocAppointment />
-        </ProtectedRoute>
-      } />
+        <Route path="/admin/dashboard" element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <Dashboard />
+          </ProtectedRoute>
+        } />
+        <Route path="/admin/patients" element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <Patients />
+          </ProtectedRoute>
+        } />
+        <Route path="/admin/doctors" element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <Doctors />
+          </ProtectedRoute>
+        } />
+        <Route path="/admin/appointments" element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <Appointments />
+          </ProtectedRoute>
+        } />
+        <Route path="/admin/settings" element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <Controls />
+          </ProtectedRoute>
+        } />
 
-      <Route path="/doctor/profile" element={
-        <ProtectedRoute allowedRoles={['doctor']}>
-          <DocProfile />
-        </ProtectedRoute>
-      } />
+        {/* Doctor Routes */}
 
-      <Route path="/doctor/settings" element={
-        <ProtectedRoute allowedRoles={['doctor']}>
-          <DocSettings />
-        </ProtectedRoute>
-      } />
+        <Route path="/doctor/patient" element={
+          <ProtectedRoute allowedRoles={['doctor']}>
+            <DocPatient />
+          </ProtectedRoute>
+        } />
 
-      {/* Patient Routes */}    
-      
-      <Route path="/patient/dashboard" element={
-        <ProtectedRoute allowedRoles={['patient']}>
-          <PatientDash />
-        </ProtectedRoute>
-      } />
-      
-      <Route path="/patient/profile" element={
-        <ProtectedRoute allowedRoles={['patient']}>
-          <PatProfile />
-        </ProtectedRoute>
-      } />
-      
-      <Route path="/patient/settings" element={
-        <ProtectedRoute allowedRoles={['patient']}>
-          <PatSettings />
-        </ProtectedRoute>
-      } />
-      
-      <Route path="/patient/appointment" element={
-        <ProtectedRoute allowedRoles={['patient']}>
-          <PatAppointments />
-        </ProtectedRoute>
-      } />
-      
-      <Route path="/patient/doctors" element={
-        <ProtectedRoute allowedRoles={['patient']}>
-          <PatDoctors />
-        </ProtectedRoute>
-      } />
-      <Route path="*" element={<Navigate to="/login" replace />} />  
-     </Routes>
-     
+        <Route path="/doctor/schedule" element={
+          <ProtectedRoute allowedRoles={['doctor']}>
+            <DocSchedule />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/doctor/dashboard" element={
+          <ProtectedRoute allowedRoles={['doctor']}>
+            <DocDashboard />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/doctor/appointment" element={
+          <ProtectedRoute allowedRoles={['doctor']}>
+            <DocAppointment />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/doctor/profile" element={
+          <ProtectedRoute allowedRoles={['doctor']}>
+            <DocProfile />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/doctor/settings" element={
+          <ProtectedRoute allowedRoles={['doctor']}>
+            <DocSettings />
+          </ProtectedRoute>
+        } />
+
+        {/* Patient Routes */}
+
+        <Route path="/patient/dashboard" element={
+          <ProtectedRoute allowedRoles={['patient']}>
+            <PatientDash />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/patient/profile" element={
+          <ProtectedRoute allowedRoles={['patient']}>
+            <PatProfile />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/patient/settings" element={
+          <ProtectedRoute allowedRoles={['patient']}>
+            <PatSettings />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/patient/appointment" element={
+          <ProtectedRoute allowedRoles={['patient']}>
+            <PatAppointments />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/patient/doctors" element={
+          <ProtectedRoute allowedRoles={['patient']}>
+            <PatDoctors />
+          </ProtectedRoute>
+        } />
+        <Route path="*" element={<Navigate to="/login" replace />} />
+      </Routes>
+
     </>
   );
 }
@@ -361,7 +369,7 @@ export default App;
 // Just tell me what you want next 🚀
 
 
-// next Part 
+// next Part
 
 
 

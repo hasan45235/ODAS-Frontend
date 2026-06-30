@@ -45,7 +45,7 @@ function Navbar() {
 
     const navLinks = [
         { label: "Home", path: "/" },
-        { label: "Doctors", path: "/doctors" },
+        { label: "Doctors", path: "/doctor" },
         { label: "Services", path: "/services" },
         { label: "About", path: "/about" },
         { label: "Contact", path: "/contact" },
