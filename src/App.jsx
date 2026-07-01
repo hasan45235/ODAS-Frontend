@@ -1,7 +1,7 @@
 import React from "react";
 import Home from "./Pages/Home";
 import Navbar from "./Components/Navbar";
-import { Navigate, Route, Routes } from "react-router-dom"
+import { Navigate, Route, Routes, useLocation } from "react-router-dom"
 import Login from "./Pages/Login";
 import Signup from "./Pages/Signup";
 import Services from "./Pages/Services";
@@ -32,11 +32,11 @@ import DocDashboard from "./Components/Doctor/DocDashboard"
 
 function App() {
 
-  const authToken = JSON.parse(localStorage.getItem('authToken'))
+  const location = useLocation()
 
   return (
     <>
-      {!authToken ? <Navbar /> : null}
+      {location.pathname === "/login" || location.pathname === "/signup" || location.pathname === "/" || location.pathname === "/services" || location.pathname === "/doctor" || location.pathname === "/about" || location.pathname === "/contact" ? <Navbar /> : null}
 
 
 
